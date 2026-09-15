@@ -1,331 +1,829 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="GameHub PSP & PS2 — catálogo de jogos, informações, compatibilidade e guias.">
-<meta name="theme-color" content="#0f172a">
 
-<title>GameHub PSP & PS2</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="style.css">
+    <meta
+        name="description"
+        content="GameHub PSP & PS2 — catálogo independente de jogos clássicos, informações, compatibilidade, imagens e guias."
+    >
 
-</head><body><!-- CABEÇALHO -->
-<header class="cabecalho">
-    <div class="container cabecalho-conteudo">
+    <meta
+        name="theme-color"
+        content="#09090b"
+    >
 
-        <a href="#" class="logo" onclick="mostrarInicio()">
-            🎮 <span>GameHub</span>
-        </a>
+    <title>GameHub PSP & PS2</title>
 
-        <nav class="navegacao">
-            <button onclick="mostrarInicio()">Início</button>
-            <button onclick="filtrarPlataforma('PSP')">PSP</button>
-            <button onclick="filtrarPlataforma('PS2')">PS2</button>
-            <button onclick="mostrarGuias()">Guias</button>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <a href="#inicio" class="logo" aria-label="GameHub início">
+                <span class="logo-icon">🎮</span>
+                <span class="logo-text">
+                    <strong>GameHub</strong>
+                    <small>PSP & PS2</small>
+                </span>
+            </a>
+
+            <nav class="desktop-nav" aria-label="Navegação principal">
+
+                <a href="#inicio">Início</a>
+                <a href="#catalogo">Jogos</a>
+                <a href="#plataformas">Plataformas</a>
+                <a href="#guias">Guias</a>
+
+            </nav>
+
+            <button
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+        </div>
+
+        <nav
+            class="mobile-nav"
+            id="mobileNav"
+            aria-label="Menu mobile"
+        >
+
+            <a href="#inicio">Início</a>
+            <a href="#catalogo">Jogos</a>
+            <a href="#plataformas">Plataformas</a>
+            <a href="#guias">Guias</a>
+
         </nav>
 
-        <button class="botao-menu" onclick="alternarMenu()" aria-label="Abrir menu">
-            ☰
-        </button>
-
-    </div>
-</header>
+    </header>
 
 
-<!-- CONTEÚDO PRINCIPAL -->
-<main>
+    <main id="inicio">
 
-    <!-- HERO -->
-    <section id="inicio" class="hero">
-        <div class="container hero-conteudo">
+        <!-- =========================
+             HERO
+        ========================== -->
 
-            <div class="hero-texto">
-                <span class="hero-tag">🎮 CATÁLOGO PSP & PS2</span>
+        <section class="hero">
+
+            <div class="hero-background"></div>
+
+            <div class="container hero-content">
+
+                <div class="hero-badge">
+                    🎮 CATÁLOGO INDEPENDENTE
+                </div>
 
                 <h1>
-                    Explore o mundo dos
-                    <strong>games clássicos</strong>
+                    O universo dos
+                    <span>games clássicos</span>
                 </h1>
 
                 <p>
-                    Encontre jogos, informações, compatibilidade,
-                    imagens e guias para PSP e PlayStation 2.
+                    Explore jogos de PSP e PlayStation 2,
+                    descubra informações, compatibilidade,
+                    imagens e guias para melhorar sua experiência.
                 </p>
 
-                <div class="hero-botoes">
-                    <button class="botao-principal" onclick="filtrarPlataforma('PSP')">
-                        🎮 Explorar PSP
-                    </button>
+                <div class="hero-actions">
 
-                    <button class="botao-secundario" onclick="filtrarPlataforma('PS2')">
-                        🎮 Explorar PS2
-                    </button>
+                    <a
+                        href="#catalogo"
+                        class="button button-primary"
+                    >
+                        🎮 Explorar jogos
+                    </a>
+
+                    <a
+                        href="#plataformas"
+                        class="button button-secondary"
+                    >
+                        Ver plataformas
+                    </a>
+
                 </div>
+
             </div>
 
-        </div>
-    </section>
+        </section>
 
 
-    <!-- PESQUISA -->
-    <section class="pesquisa-section">
-        <div class="container">
+        <!-- =========================
+             PESQUISA
+        ========================== -->
 
-            <div class="barra-pesquisa">
-                <span class="icone-pesquisa">🔎</span>
+        <section class="search-section">
 
-                <input
-                    type="search"
-                    id="campoPesquisa"
-                    placeholder="Pesquisar jogos..."
-                    autocomplete="off"
-                    oninput="pesquisarJogos()"
+            <div class="container">
+
+                <div class="search-box">
+
+                    <span class="search-icon">🔎</span>
+
+                    <input
+                        type="search"
+                        id="gameSearch"
+                        placeholder="Pesquisar jogos..."
+                        autocomplete="off"
+                        aria-label="Pesquisar jogos"
+                    >
+
+                    <button
+                        type="button"
+                        id="clearSearch"
+                        class="clear-search"
+                        aria-label="Limpar pesquisa"
+                        hidden
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DESTAQUES
+        ========================== -->
+
+        <section class="section featured-section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            DESTAQUES
+                        </span>
+
+                        <h2>Jogos em destaque</h2>
+
+                        <p>
+                            Alguns dos títulos que fazem parte
+                            do catálogo GameHub.
+                        </p>
+                    </div>
+
+                    <a
+                        href="#catalogo"
+                        class="section-link"
+                    >
+                        Ver todos →
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="games-grid featured-grid"
+                    id="featuredGames"
                 >
 
-                <button onclick="limparPesquisa()" id="limparPesquisa" aria-label="Limpar pesquisa">
-                    ✕
-                </button>
-            </div>
+                    <!--
+                        Os jogos serão carregados pelo game.js.
+                        Não coloque imagens de Anatomia aqui.
+                    -->
 
-        </div>
-    </section>
-
-
-    <!-- JOGOS EM DESTAQUE -->
-    <section class="secao">
-        <div class="container">
-
-            <div class="titulo-secao">
-                <div>
-                    <span class="subtitulo">DESTAQUES</span>
-                    <h2>Jogos em destaque</h2>
                 </div>
 
-                <button onclick="mostrarTodosJogos()" class="ver-todos">
-                    Ver todos →
-                </button>
             </div>
 
-            <div id="jogosDestaque" class="grade-jogos">
-                <!-- Os jogos serão inseridos pelo game.js -->
-            </div>
-
-        </div>
-    </section>
+        </section>
 
 
-    <!-- PLATAFORMAS -->
-    <section class="secao secao-plataformas">
-        <div class="container">
+        <!-- =========================
+             PLATAFORMAS
+        ========================== -->
 
-            <div class="titulo-secao">
-                <div>
-                    <span class="subtitulo">PLATAFORMAS</span>
+        <section
+            class="section platforms-section"
+            id="plataformas"
+        >
+
+            <div class="container">
+
+                <div class="section-heading centered">
+
+                    <span class="section-kicker">
+                        PLATAFORMAS
+                    </span>
+
                     <h2>Escolha sua plataforma</h2>
+
+                    <p>
+                        Explore os catálogos separados de PSP
+                        e PlayStation 2.
+                    </p>
+
                 </div>
+
+
+                <div class="platform-grid">
+
+                    <button
+                        type="button"
+                        class="platform-card platform-psp"
+                        data-platform="PSP"
+                    >
+
+                        <div class="platform-icon">
+                            🎮
+                        </div>
+
+                        <div class="platform-info">
+
+                            <span class="platform-label">
+                                PORTÁTIL
+                            </span>
+
+                            <h3>
+                                PlayStation Portable
+                            </h3>
+
+                            <p>
+                                Explore o catálogo de jogos
+                                para PSP.
+                            </p>
+
+                        </div>
+
+                        <span class="platform-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="platform-card platform-ps2"
+                        data-platform="PS2"
+                    >
+
+                        <div class="platform-icon">
+                            🎮
+                        </div>
+
+                        <div class="platform-info">
+
+                            <span class="platform-label">
+                                CONSOLE
+                            </span>
+
+                            <h3>
+                                PlayStation 2
+                            </h3>
+
+                            <p>
+                                Explore o catálogo de jogos
+                                para PS2.
+                            </p>
+
+                        </div>
+
+                        <span class="platform-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="plataformas">
-
-                <button
-                    class="card-plataforma"
-                    onclick="filtrarPlataforma('PSP')">
-
-                    <span class="plataforma-icone">🎮</span>
-
-                    <div>
-                        <h3>PlayStation Portable</h3>
-                        <p>Explore o catálogo de jogos para PSP.</p>
-                    </div>
-
-                    <span class="seta">→</span>
-                </button>
+        </section>
 
 
-                <button
-                    class="card-plataforma"
-                    onclick="filtrarPlataforma('PS2')">
+        <!-- =========================
+             CATÁLOGO
+        ========================== -->
 
-                    <span class="plataforma-icone">🎮</span>
+        <section
+            class="section catalog-section"
+            id="catalogo"
+        >
+
+            <div class="container">
+
+                <div class="section-heading">
 
                     <div>
-                        <h3>PlayStation 2</h3>
-                        <p>Explore o catálogo de jogos para PS2.</p>
+
+                        <span class="section-kicker">
+                            CATÁLOGO
+                        </span>
+
+                        <h2 id="catalogTitle">
+                            Todos os jogos
+                        </h2>
+
+                        <p id="catalogDescription">
+                            Encontre seu próximo jogo favorito.
+                        </p>
+
                     </div>
 
-                    <span class="seta">→</span>
-                </button>
+                </div>
+
+
+                <!-- FILTROS -->
+
+                <div class="catalog-controls">
+
+                    <div
+                        class="filter-group"
+                        role="group"
+                        aria-label="Filtrar por plataforma"
+                    >
+
+                        <button
+                            type="button"
+                            class="filter-button active"
+                            data-filter="TODOS"
+                        >
+                            Todos
+                        </button>
+
+                        <button
+                            type="button"
+                            class="filter-button"
+                            data-filter="PSP"
+                        >
+                            PSP
+                        </button>
+
+                        <button
+                            type="button"
+                            class="filter-button"
+                            data-filter="PS2"
+                        >
+                            PS2
+                        </button>
+
+                    </div>
+
+
+                    <div class="catalog-count">
+                        <span id="gameCount">0</span>
+                        jogos
+                    </div>
+
+                </div>
+
+
+                <!-- RESULTADO DA PESQUISA -->
+
+                <div
+                    id="searchMessage"
+                    class="search-message"
+                    hidden
+                >
+                    <strong>Resultados da pesquisa</strong>
+                    <span id="searchResultText"></span>
+                </div>
+
+
+                <!-- JOGOS -->
+
+                <div
+                    class="games-grid"
+                    id="gamesGrid"
+                >
+
+                    <!--
+                        O game.js preencherá este espaço.
+                    -->
+
+                </div>
+
+
+                <!-- ESTADO VAZIO -->
+
+                <div
+                    id="emptyState"
+                    class="empty-state"
+                    hidden
+                >
+
+                    <div class="empty-icon">
+                        🔎
+                    </div>
+
+                    <h3>
+                        Nenhum jogo encontrado
+                    </h3>
+
+                    <p>
+                        Tente pesquisar por outro nome
+                        ou alterar o filtro da plataforma.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="resetFilters"
+                        class="button button-primary"
+                    >
+                        Limpar filtros
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             GUIAS
+        ========================== -->
+
+        <section
+            class="section guides-section"
+            id="guias"
+        >
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            GUIAS
+                        </span>
+
+                        <h2>
+                            Guias e informações
+                        </h2>
+
+                        <p>
+                            Conteúdo para ajudar você a conhecer
+                            melhor os jogos e a emulação.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="#guias"
+                        class="section-link"
+                    >
+                        Ver guias →
+                    </a>
+
+                </div>
+
+
+                <div class="guides-grid">
+
+                    <article class="guide-card">
+
+                        <div class="guide-icon">
+                            ⚙️
+                        </div>
+
+                        <div>
+
+                            <span class="guide-tag">
+                                PSP
+                            </span>
+
+                            <h3>
+                                Emulação PSP
+                            </h3>
+
+                            <p>
+                                Informações para configurar
+                                e utilizar emuladores de PSP.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="#"
+                            class="guide-link"
+                            data-guide="psp"
+                        >
+                            Ler guia →
+                        </a>
+
+                    </article>
+
+
+                    <article class="guide-card">
+
+                        <div class="guide-icon">
+                            ⚙️
+                        </div>
+
+                        <div>
+
+                            <span class="guide-tag">
+                                PS2
+                            </span>
+
+                            <h3>
+                                Emulação PS2
+                            </h3>
+
+                            <p>
+                                Informações sobre configuração,
+                                desempenho e compatibilidade.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="#"
+                            class="guide-link"
+                            data-guide="ps2"
+                        >
+                            Ler guia →
+                        </a>
+
+                    </article>
+
+
+                    <article class="guide-card">
+
+                        <div class="guide-icon">
+                            💡
+                        </div>
+
+                        <div>
+
+                            <span class="guide-tag">
+                                DICAS
+                            </span>
+
+                            <h3>
+                                Dicas para jogadores
+                            </h3>
+
+                            <p>
+                                Dicas para melhorar sua experiência
+                                com jogos clássicos.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="#"
+                            class="guide-link"
+                            data-guide="dicas"
+                        >
+                            Ler guia →
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SOBRE O GAMEHUB
+        ========================== -->
+
+        <section class="section about-section">
+
+            <div class="container">
+
+                <div class="about-card">
+
+                    <div class="about-icon">
+                        🎮
+                    </div>
+
+                    <div class="about-content">
+
+                        <span class="section-kicker">
+                            GAMEHUB
+                        </span>
+
+                        <h2>
+                            Um catálogo feito para fãs
+                        </h2>
+
+                        <p>
+                            O GameHub é um projeto independente
+                            dedicado a reunir informações sobre
+                            jogos clássicos de PSP e PlayStation 2
+                            em uma experiência simples e organizada.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         MODAL DO JOGO
+    ========================== -->
+
+    <div
+        class="modal"
+        id="gameModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalGameTitle"
+    >
+
+        <div class="modal-overlay" id="modalOverlay"></div>
+
+        <div class="modal-content">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose"
+                aria-label="Fechar"
+            >
+                ×
+            </button>
+
+            <div id="modalGameContent">
+
+                <!-- Conteúdo preenchido pelo game.js -->
 
             </div>
 
         </div>
-    </section>
+
+    </div>
 
 
-    <!-- CATÁLOGO -->
-    <section id="catalogo" class="secao">
+    <!-- =========================
+         RODAPÉ
+    ========================== -->
+
+    <footer class="site-footer">
 
         <div class="container">
 
-            <div class="titulo-secao">
-                <div>
-                    <span class="subtitulo">CATÁLOGO</span>
-                    <h2 id="tituloCatalogo">Todos os jogos</h2>
+            <div class="footer-main">
+
+                <div class="footer-brand">
+
+                    <a
+                        href="#inicio"
+                        class="logo"
+                    >
+
+                        <span class="logo-icon">
+                            🎮
+                        </span>
+
+                        <span class="logo-text">
+
+                            <strong>
+                                GameHub
+                            </strong>
+
+                            <small>
+                                PSP & PS2
+                            </small>
+
+                        </span>
+
+                    </a>
+
+                    <p>
+                        Catálogo independente de jogos
+                        PSP e PlayStation 2.
+                    </p>
+
                 </div>
 
-                <button onclick="mostrarTodosJogos()" class="ver-todos">
-                    Todos
-                </button>
+
+                <div class="footer-column">
+
+                    <h3>
+                        Navegação
+                    </h3>
+
+                    <a href="#inicio">
+                        Início
+                    </a>
+
+                    <a href="#catalogo">
+                        Jogos
+                    </a>
+
+                    <a href="#plataformas">
+                        Plataformas
+                    </a>
+
+                    <a href="#guias">
+                        Guias
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Plataformas
+                    </h3>
+
+                    <a
+                        href="#catalogo"
+                        data-footer-platform="PSP"
+                    >
+                        PSP
+                    </a>
+
+                    <a
+                        href="#catalogo"
+                        data-footer-platform="PS2"
+                    >
+                        PS2
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Informações
+                    </h3>
+
+                    <a href="#">
+                        Sobre
+                    </a>
+
+                    <a href="#">
+                        Privacidade
+                    </a>
+
+                    <a href="#">
+                        Termos
+                    </a>
+
+                </div>
+
             </div>
 
 
-            <!-- FILTROS -->
-            <div class="filtros">
+            <div class="footer-bottom">
 
-                <button
-                    class="filtro ativo"
-                    onclick="filtrarPlataforma('TODOS')">
-                    Todos
-                </button>
-
-                <button
-                    class="filtro"
-                    onclick="filtrarPlataforma('PSP')">
-                    PSP
-                </button>
-
-                <button
-                    class="filtro"
-                    onclick="filtrarPlataforma('PS2')">
-                    PS2
-                </button>
-
-            </div>
-
-
-            <div id="catalogoJogos" class="grade-jogos">
-                <!-- Os jogos serão inseridos pelo game.js -->
-            </div>
-
-
-            <div id="semResultados" class="sem-resultados">
-                <div>🎮</div>
-                <h3>Nenhum jogo encontrado</h3>
                 <p>
-                    Tente pesquisar por outro nome ou alterar os filtros.
+                    © <span id="currentYear">2026</span>
+                    GameHub PSP & PS2.
+                    Projeto independente.
                 </p>
-            </div>
 
-        </div>
-
-    </section>
-
-
-    <!-- GUIAS -->
-    <section id="guias" class="secao secao-guias">
-
-        <div class="container">
-
-            <div class="titulo-secao">
-                <div>
-                    <span class="subtitulo">GUIAS</span>
-                    <h2>Guias e informações</h2>
-                </div>
-
-                <button onclick="mostrarGuias()" class="ver-todos">
-                    Ver guias →
-                </button>
-            </div>
-
-
-            <div class="guias-grid">
-
-                <article class="card-guia">
-                    <span class="guia-icone">⚙️</span>
-                    <h3>Emulação PSP</h3>
-                    <p>
-                        Informações para configurar e utilizar
-                        emuladores de PSP.
-                    </p>
-                </article>
-
-
-                <article class="card-guia">
-                    <span class="guia-icone">⚙️</span>
-                    <h3>Emulação PS2</h3>
-                    <p>
-                        Informações sobre configuração e desempenho
-                        em emuladores de PS2.
-                    </p>
-                </article>
-
-
-                <article class="card-guia">
-                    <span class="guia-icone">💡</span>
-                    <h3>Dicas</h3>
-                    <p>
-                        Dicas para melhorar sua experiência
-                        com jogos clássicos.
-                    </p>
-                </article>
+                <p>
+                    Feito para fãs de games clássicos.
+                </p>
 
             </div>
 
         </div>
 
-    </section>
-
-</main>
+    </footer>
 
 
-<!-- RODAPÉ -->
-<footer class="rodape">
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
 
-    <div class="container rodape-conteudo">
-
-        <div>
-            <div class="logo rodape-logo">
-                🎮 GameHub
-            </div>
-
-            <p>
-                Catálogo independente de jogos PSP e PS2.
-            </p>
-        </div>
-
-
-        <div class="rodape-links">
-
-            <div>
-                <h4>GameHub</h4>
-                <button onclick="mostrarInicio()">Início</button>
-                <button onclick="mostrarTodosJogos()">Jogos</button>
-                <button onclick="mostrarGuias()">Guias</button>
-            </div>
-
-            <div>
-                <h4>Plataformas</h4>
-                <button onclick="filtrarPlataforma('PSP')">PSP</button>
-                <button onclick="filtrarPlataforma('PS2')">PS2</button>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="rodape-final">
-        <div class="container">
-            <p>
-                © 2026 GameHub PSP & PS2. Projeto independente.
-            </p>
-        </div>
-    </div>
-
-</footer>
-
-
-<!-- JAVASCRIPT -->
-<script src="game.js"></script>
+    <script src="game.js"></script>
 
 </body>
 </html>
