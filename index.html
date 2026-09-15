@@ -1,131 +1,88 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anatomia em Jogo</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="GameHub PSP & PS2 — catálogo de jogos, informações, compatibilidade e guias.">
+<meta name="theme-color" content="#0f172a">
 
-<body>
+<title>GameHub PSP & PS2</title>
 
-    <!-- TELA INICIAL -->
-    <section id="inicio" class="tela ativa">
-        <div class="container">
-            <header class="cabecalho">
-                <h1>🧠 Anatomia em Jogo</h1>
-                <p>Estude os sistemas Respiratório e Digestório</p>
-            </header>
+<link rel="stylesheet" href="style.css">
 
-            <div class="selecao-sistemas">
-                <h2>Escolha o sistema</h2>
+</head><body><!-- CABEÇALHO -->
+<header class="cabecalho">
+    <div class="container cabecalho-conteudo">
 
-                <div class="sistemas">
-                    <button class="card-sistema"
-                            onclick="selecionarSistema('respiratorio')">
-                        <span class="icone">🫁</span>
-                        <strong>Sistema Respiratório</strong>
-                        <small>Estruturas e anatomia do sistema respiratório</small>
+        <a href="#" class="logo" onclick="mostrarInicio()">
+            🎮 <span>GameHub</span>
+        </a>
+
+        <nav class="navegacao">
+            <button onclick="mostrarInicio()">Início</button>
+            <button onclick="filtrarPlataforma('PSP')">PSP</button>
+            <button onclick="filtrarPlataforma('PS2')">PS2</button>
+            <button onclick="mostrarGuias()">Guias</button>
+        </nav>
+
+        <button class="botao-menu" onclick="alternarMenu()" aria-label="Abrir menu">
+            ☰
+        </button>
+
+    </div>
+</header>
+
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main>
+
+    <!-- HERO -->
+    <section id="inicio" class="hero">
+        <div class="container hero-conteudo">
+
+            <div class="hero-texto">
+                <span class="hero-tag">🎮 CATÁLOGO PSP & PS2</span>
+
+                <h1>
+                    Explore o mundo dos
+                    <strong>games clássicos</strong>
+                </h1>
+
+                <p>
+                    Encontre jogos, informações, compatibilidade,
+                    imagens e guias para PSP e PlayStation 2.
+                </p>
+
+                <div class="hero-botoes">
+                    <button class="botao-principal" onclick="filtrarPlataforma('PSP')">
+                        🎮 Explorar PSP
                     </button>
 
-                    <button class="card-sistema"
-                            onclick="selecionarSistema('digestorio')">
-                        <span class="icone">🫃</span>
-                        <strong>Sistema Digestório</strong>
-                        <small>Estruturas e anatomia do sistema digestório</small>
+                    <button class="botao-secundario" onclick="filtrarPlataforma('PS2')">
+                        🎮 Explorar PS2
                     </button>
                 </div>
             </div>
 
-            <div id="configuracao" class="configuracao">
-                <button class="botao-voltar" onclick="voltarMenu()">
-                    ← Voltar
-                </button>
-
-                <div class="config-box">
-                    <h2 id="tituloSistema">Sistema</h2>
-
-                    <p>Escolha o modo de estudo:</p>
-
-                    <div class="modos">
-                        <button class="botao-modo"
-                                onclick="iniciarJogo('estudar')">
-                            📚
-                            <strong>Estudar</strong>
-                            <span>50 questões</span>
-                        </button>
-
-                        <button class="botao-modo"
-                                onclick="iniciarJogo('treinar')">
-                            🎯
-                            <strong>Treinar</strong>
-                            <span>70 questões</span>
-                        </button>
-
-                        <button class="botao-modo"
-                                onclick="iniciarJogo('simulado')">
-                            📝
-                            <strong>Simulado</strong>
-                            <span>100 questões</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <footer>
-                Desenvolvedor: Rayke Jovino de Souza
-            </footer>
         </div>
     </section>
 
 
-    <!-- TELA DO JOGO -->
-    <section id="jogo" class="tela">
-        <div class="jogo-container">
+    <!-- PESQUISA -->
+    <section class="pesquisa-section">
+        <div class="container">
 
-            <div class="topo-jogo">
-                <button class="botao-sair" onclick="sairJogo()">
-                    ← Sair
-                </button>
+            <div class="barra-pesquisa">
+                <span class="icone-pesquisa">🔎</span>
 
-                <div class="contador" id="contador">
-                    1/50
-                </div>
+                <input
+                    type="search"
+                    id="campoPesquisa"
+                    placeholder="Pesquisar jogos..."
+                    autocomplete="off"
+                    oninput="pesquisarJogos()"
+                >
 
-                <div class="pontuacao" id="pontuacao">
-                    Pontos: 0
-                </div>
-            </div>
-
-            <div class="barra-progresso">
-                <div id="progresso" class="progresso"></div>
-            </div>
-
-            <div class="questao">
-                <h2 id="pergunta" class="pergunta">
-                    Carregando pergunta...
-                </h2>
-
-                <div class="imagem-area">
-                    <div class="imagem-container">
-                        <img id="imagemAnatomica"
-                             src=""
-                             alt="Imagem anatômica do material">
-
-                        <div id="semImagem" class="sem-imagem">
-                            Imagem não disponível.
-                        </div>
-                    </div>
-                </div>
-
-                <div id="alternativas" class="alternativas"></div>
-
-                <div id="feedback" class="feedback"></div>
-
-                <button id="proxima"
-                        class="botao-proxima"
-                        onclick="proximaQuestao()">
-                    Próxima questão →
+                <button onclick="limparPesquisa()" id="limparPesquisa" aria-label="Limpar pesquisa">
+                    ✕
                 </button>
             </div>
 
@@ -133,52 +90,242 @@
     </section>
 
 
-    <!-- TELA DE RESULTADO -->
-    <section id="resultado" class="tela">
+    <!-- JOGOS EM DESTAQUE -->
+    <section class="secao">
         <div class="container">
 
-            <div class="resultado-container">
-                <div class="resultado-box">
+            <div class="titulo-secao">
+                <div>
+                    <span class="subtitulo">DESTAQUES</span>
+                    <h2>Jogos em destaque</h2>
+                </div>
 
-                    <div class="trofeu">🏆</div>
+                <button onclick="mostrarTodosJogos()" class="ver-todos">
+                    Ver todos →
+                </button>
+            </div>
 
-                    <h1>Resultado</h1>
+            <div id="jogosDestaque" class="grade-jogos">
+                <!-- Os jogos serão inseridos pelo game.js -->
+            </div>
 
-                    <div id="porcentagem" class="porcentagem">
-                        0%
+        </div>
+    </section>
+
+
+    <!-- PLATAFORMAS -->
+    <section class="secao secao-plataformas">
+        <div class="container">
+
+            <div class="titulo-secao">
+                <div>
+                    <span class="subtitulo">PLATAFORMAS</span>
+                    <h2>Escolha sua plataforma</h2>
+                </div>
+            </div>
+
+            <div class="plataformas">
+
+                <button
+                    class="card-plataforma"
+                    onclick="filtrarPlataforma('PSP')">
+
+                    <span class="plataforma-icone">🎮</span>
+
+                    <div>
+                        <h3>PlayStation Portable</h3>
+                        <p>Explore o catálogo de jogos para PSP.</p>
                     </div>
 
-                    <p id="mensagemResultado"
-                       class="mensagem-resultado">
-                        Muito bem!
+                    <span class="seta">→</span>
+                </button>
+
+
+                <button
+                    class="card-plataforma"
+                    onclick="filtrarPlataforma('PS2')">
+
+                    <span class="plataforma-icone">🎮</span>
+
+                    <div>
+                        <h3>PlayStation 2</h3>
+                        <p>Explore o catálogo de jogos para PS2.</p>
+                    </div>
+
+                    <span class="seta">→</span>
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CATÁLOGO -->
+    <section id="catalogo" class="secao">
+
+        <div class="container">
+
+            <div class="titulo-secao">
+                <div>
+                    <span class="subtitulo">CATÁLOGO</span>
+                    <h2 id="tituloCatalogo">Todos os jogos</h2>
+                </div>
+
+                <button onclick="mostrarTodosJogos()" class="ver-todos">
+                    Todos
+                </button>
+            </div>
+
+
+            <!-- FILTROS -->
+            <div class="filtros">
+
+                <button
+                    class="filtro ativo"
+                    onclick="filtrarPlataforma('TODOS')">
+                    Todos
+                </button>
+
+                <button
+                    class="filtro"
+                    onclick="filtrarPlataforma('PSP')">
+                    PSP
+                </button>
+
+                <button
+                    class="filtro"
+                    onclick="filtrarPlataforma('PS2')">
+                    PS2
+                </button>
+
+            </div>
+
+
+            <div id="catalogoJogos" class="grade-jogos">
+                <!-- Os jogos serão inseridos pelo game.js -->
+            </div>
+
+
+            <div id="semResultados" class="sem-resultados">
+                <div>🎮</div>
+                <h3>Nenhum jogo encontrado</h3>
+                <p>
+                    Tente pesquisar por outro nome ou alterar os filtros.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GUIAS -->
+    <section id="guias" class="secao secao-guias">
+
+        <div class="container">
+
+            <div class="titulo-secao">
+                <div>
+                    <span class="subtitulo">GUIAS</span>
+                    <h2>Guias e informações</h2>
+                </div>
+
+                <button onclick="mostrarGuias()" class="ver-todos">
+                    Ver guias →
+                </button>
+            </div>
+
+
+            <div class="guias-grid">
+
+                <article class="card-guia">
+                    <span class="guia-icone">⚙️</span>
+                    <h3>Emulação PSP</h3>
+                    <p>
+                        Informações para configurar e utilizar
+                        emuladores de PSP.
                     </p>
+                </article>
 
-                    <div class="botoes-resultado">
 
-                        <button class="botao-principal"
-                                onclick="jogarNovamente()">
-                            🔄 Jogar novamente
-                        </button>
+                <article class="card-guia">
+                    <span class="guia-icone">⚙️</span>
+                    <h3>Emulação PS2</h3>
+                    <p>
+                        Informações sobre configuração e desempenho
+                        em emuladores de PS2.
+                    </p>
+                </article>
 
-                        <button class="botao-secundario"
-                                onclick="voltarMenu()">
-                            🏠 Voltar ao menu
-                        </button>
 
-                    </div>
+                <article class="card-guia">
+                    <span class="guia-icone">💡</span>
+                    <h3>Dicas</h3>
+                    <p>
+                        Dicas para melhorar sua experiência
+                        com jogos clássicos.
+                    </p>
+                </article>
 
-                </div>
             </div>
 
-            <footer>
-                Desenvolvedor: Rayke Jovino de Souza
-            </footer>
-
         </div>
+
     </section>
 
+</main>
 
-    <script src="game.js"></script>
+
+<!-- RODAPÉ -->
+<footer class="rodape">
+
+    <div class="container rodape-conteudo">
+
+        <div>
+            <div class="logo rodape-logo">
+                🎮 GameHub
+            </div>
+
+            <p>
+                Catálogo independente de jogos PSP e PS2.
+            </p>
+        </div>
+
+
+        <div class="rodape-links">
+
+            <div>
+                <h4>GameHub</h4>
+                <button onclick="mostrarInicio()">Início</button>
+                <button onclick="mostrarTodosJogos()">Jogos</button>
+                <button onclick="mostrarGuias()">Guias</button>
+            </div>
+
+            <div>
+                <h4>Plataformas</h4>
+                <button onclick="filtrarPlataforma('PSP')">PSP</button>
+                <button onclick="filtrarPlataforma('PS2')">PS2</button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="rodape-final">
+        <div class="container">
+            <p>
+                © 2026 GameHub PSP & PS2. Projeto independente.
+            </p>
+        </div>
+    </div>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+<script src="game.js"></script>
 
 </body>
 </html>
