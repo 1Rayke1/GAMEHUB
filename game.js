@@ -1,1421 +1,869 @@
-"use strict";
-
 /* =========================================================
-   GAMEHUB — CATÁLOGO PSP & PS2
+   GAMEHUB PSP & PS2
+   game.js
    ========================================================= */
 
-/* =========================================================
-   DADOS DOS JOGOS
-   ========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
 
-const games = [
-  {
-    id: 1,
-    title: "God of War: Ghost of Sparta",
-    platform: "PSP",
-    year: 2010,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Uma das principais aventuras de Kratos no PSP.",
-    searchTerms: "god of war ghost sparta gow kratos",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/God_of_War_Ghost_of_Sparta_cover.jpg"
-  },
+  /* =========================================================
+     CONFIGURAÇÃO
+     ========================================================= */
 
-  {
-    id: 2,
-    title: "God of War: Chains of Olympus",
-    platform: "PSP",
-    year: 2008,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Aventura de ação da série God of War para PSP.",
-    searchTerms: "god of war chains olympus gow kratos",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/God_of_War_Chains_of_Olympus_cover.jpg"
-  },
+  const COVER_PATH = "./images/covers/";
 
-  {
-    id: 3,
-    title: "GTA Vice City Stories",
-    platform: "PSP",
-    year: 2006,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Explore Vice City em uma aventura exclusiva para PSP.",
-    searchTerms: "gta grand theft auto vice city stories vcs",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Grand_Theft_Auto_Vice_City_Stories.jpg"
-  },
+  /* =========================================================
+     CATÁLOGO DE JOGOS
+     ========================================================= */
 
-  {
-    id: 4,
-    title: "GTA Liberty City Stories",
-    platform: "PSP",
-    year: 2005,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Uma aventura ambientada em Liberty City.",
-    searchTerms: "gta grand theft auto liberty city stories lcs",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Grand_Theft_Auto_Liberty_City_Stories.jpg"
-  },
+  const games = [
+    {
+      id: 1,
+      title: "God of War: Ghost of Sparta",
+      platform: "PSP",
+      genre: "Ação",
+      year: 2010,
+      cover: "god-of-war-ghost-of-sparta.jpg",
+      description:
+        "Kratos retorna em uma aventura épica para PSP, explorando acontecimentos entre os jogos da série principal.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 5,
-    title: "Tekken 6",
-    platform: "PSP",
-    year: 2009,
-    genre: "Luta",
-    rating: "Excelente",
-    description: "Clássico jogo de luta da franquia Tekken.",
-    searchTerms: "tekken 6 luta fighting",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Tekken_6.jpg"
-  },
+    {
+      id: 2,
+      title: "God of War: Chains of Olympus",
+      platform: "PSP",
+      genre: "Ação",
+      year: 2008,
+      cover: "god-of-war-chains-of-olympus.jpg",
+      description:
+        "Uma aventura de Kratos ambientada antes dos acontecimentos do primeiro God of War.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 6,
-    title: "Dragon Ball Z: Shin Budokai",
-    platform: "PSP",
-    year: 2006,
-    genre: "Luta",
-    rating: "Excelente",
-    description: "Combates de Dragon Ball Z no PSP.",
-    searchTerms: "dragon ball dbz shin budokai goku vegeta",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Dragon_Ball_Z_Shin_Budokai.jpg"
-  },
+    {
+      id: 3,
+      title: "Grand Theft Auto: Vice City Stories",
+      platform: "PSP",
+      genre: "Ação",
+      year: 2006,
+      cover: "gta-vice-city-stories.jpg",
+      description:
+        "Explore Vice City em uma história própria protagonizada por Victor Vance.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 7,
-    title: "Naruto Shippuden: Ultimate Ninja Impact",
-    platform: "PSP",
-    year: 2011,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Ação e combates em grande escala no universo Naruto.",
-    searchTerms: "naruto shippuden ultimate ninja impact",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Naruto_Shippuden_Ultimate_Ninja_Impact.jpg"
-  },
+    {
+      id: 4,
+      title: "Grand Theft Auto: Liberty City Stories",
+      platform: "PSP",
+      genre: "Ação",
+      year: 2005,
+      cover: "gta-liberty-city-stories.jpg",
+      description:
+        "Uma nova história ambientada em Liberty City, com Toni Cipriani como protagonista.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 8,
-    title: "Burnout Legends",
-    platform: "PSP",
-    year: 2005,
-    genre: "Corrida",
-    rating: "Excelente",
-    description: "Corridas rápidas e destruição no estilo Burnout.",
-    searchTerms: "burnout legends corrida carros",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Burnout_Legends.jpg"
-  },
+    {
+      id: 5,
+      title: "Dragon Ball Z: Shin Budokai",
+      platform: "PSP",
+      genre: "Luta",
+      year: 2006,
+      cover: "dragon-ball-z-shin-budokai.jpg",
+      description:
+        "Combates rápidos de Dragon Ball Z adaptados para o PSP.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 9,
-    title: "Need for Speed: Most Wanted",
-    platform: "PSP",
-    year: 2005,
-    genre: "Corrida",
-    rating: "Excelente",
-    description: "Corridas e perseguições policiais no PSP.",
-    searchTerms: "need for speed nfs most wanted corrida carros",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Need_for_Speed_Most_Wanted_cover.jpg"
-  },
+    {
+      id: 6,
+      title: "Dragon Ball Z: Shin Budokai 2",
+      platform: "PSP",
+      genre: "Luta",
+      year: 2007,
+      cover: "dragon-ball-z-shin-budokai-2.jpg",
+      description:
+        "Continuação da série Shin Budokai, com novos personagens e batalhas.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 10,
-    title: "Pro Evolution Soccer 2014",
-    platform: "PSP",
-    year: 2013,
-    genre: "Esporte",
-    rating: "Excelente",
-    description: "Jogo de futebol da série PES para PSP.",
-    searchTerms: "pes pes 2014 futebol pro evolution soccer",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Pro_Evolution_Soccer_2014_cover.jpg"
-  },
+    {
+      id: 7,
+      title: "Tekken 6",
+      platform: "PSP",
+      genre: "Luta",
+      year: 2009,
+      cover: "tekken-6.jpg",
+      description:
+        "A versão portátil de Tekken 6 traz diversos lutadores e modos de combate.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 11,
-    title: "God of War II",
-    platform: "PS2",
-    year: 2007,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Uma das maiores aventuras de ação do PlayStation 2.",
-    searchTerms: "god of war 2 ii gow kratos",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/God_of_War_II_cover.jpg"
-  },
+    {
+      id: 8,
+      title: "Tekken: Dark Resurrection",
+      platform: "PSP",
+      genre: "Luta",
+      year: 2006,
+      cover: "tekken-dark-resurrection.jpg",
+      description:
+        "Versão portátil da famosa franquia de luta Tekken.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 12,
-    title: "Resident Evil 4",
-    platform: "PS2",
-    year: 2005,
-    genre: "Ação / Terror",
-    rating: "Excelente",
-    description: "Aventura de sobrevivência e ação protagonizada por Leon.",
-    searchTerms: "resident evil re4 4 leon terror",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Resident_Evil_4_cover.jpg"
-  },
+    {
+      id: 9,
+      title: "Naruto: Ultimate Ninja Heroes",
+      platform: "PSP",
+      genre: "Luta",
+      year: 2006,
+      cover: "naruto-ultimate-ninja-heroes.jpg",
+      description:
+        "Batalhas de Naruto em equipes e confrontos rápidos no PSP.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 13,
-    title: "Shadow of the Colossus",
-    platform: "PS2",
-    year: 2005,
-    genre: "Aventura",
-    rating: "Excelente",
-    description: "Uma aventura épica enfrentando enormes colossos.",
-    searchTerms: "shadow colossus colossos wander aventura",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Shadow_of_the_Colossus_cover.jpg"
-  },
+    {
+      id: 10,
+      title: "Naruto Shippuden: Ultimate Ninja Impact",
+      platform: "PSP",
+      genre: "Ação",
+      year: 2011,
+      cover: "naruto-ultimate-ninja-impact.jpg",
+      description:
+        "Ação intensa baseada no universo de Naruto Shippuden.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 14,
-    title: "GTA San Andreas",
-    platform: "PS2",
-    year: 2004,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Clássico mundo aberto da Rockstar Games.",
-    searchTerms: "gta grand theft auto san andreas cj",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Grand_Theft_Auto_San_Andreas_cover.jpg"
-  },
+    {
+      id: 11,
+      title: "Need for Speed: Most Wanted 5-1-0",
+      platform: "PSP",
+      genre: "Corrida",
+      year: 2005,
+      cover: "need-for-speed-most-wanted.jpg",
+      description:
+        "Corridas de rua e perseguições policiais em uma experiência portátil.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 15,
-    title: "GTA Vice City",
-    platform: "PS2",
-    year: 2002,
-    genre: "Ação",
-    rating: "Excelente",
-    description: "Uma aventura de mundo aberto ambientada em Vice City.",
-    searchTerms: "gta grand theft auto vice city tommy",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Grand_Theft_Auto_Vice_City_cover.jpg"
-  },
+    {
+      id: 12,
+      title: "Midnight Club 3: DUB Edition",
+      platform: "PSP",
+      genre: "Corrida",
+      year: 2005,
+      cover: "midnight-club-3.jpg",
+      description:
+        "Corridas urbanas com carros modificados e muita velocidade.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 16,
-    title: "Bully",
-    platform: "PS2",
-    year: 2006,
-    genre: "Ação / Aventura",
-    rating: "Excelente",
-    description: "Aventura de mundo aberto ambientada em uma escola.",
-    searchTerms: "bully scholarship edition jimmy escola",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Bully_cover.jpg"
-  },
+    {
+      id: 13,
+      title: "God of War II",
+      platform: "PS2",
+      genre: "Ação",
+      year: 2007,
+      cover: "god-of-war-2.jpg",
+      description:
+        "Kratos enfrenta novos desafios em sua busca por vingança contra os deuses.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 17,
-    title: "Black",
-    platform: "PS2",
-    year: 2006,
-    genre: "Tiro",
-    rating: "Excelente",
-    description: "Jogo de tiro em primeira pessoa conhecido pela ação intensa.",
-    searchTerms: "black fps tiro ação ps2",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Black_cover.jpg"
-  },
+    {
+      id: 14,
+      title: "God of War",
+      platform: "PS2",
+      genre: "Ação",
+      year: 2005,
+      cover: "god-of-war.jpg",
+      description:
+        "A primeira grande aventura de Kratos contra os deuses da mitologia grega.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 18,
-    title: "Need for Speed Underground 2",
-    platform: "PS2",
-    year: 2004,
-    genre: "Corrida",
-    rating: "Excelente",
-    description: "Corridas urbanas e personalização de carros.",
-    searchTerms: "need for speed nfs underground 2 corrida carros tuning",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Need_for_Speed_Underground_2_cover.jpg"
-  },
+    {
+      id: 15,
+      title: "Grand Theft Auto: San Andreas",
+      platform: "PS2",
+      genre: "Ação",
+      year: 2004,
+      cover: "gta-san-andreas.jpg",
+      description:
+        "CJ retorna a Los Santos em uma das aventuras mais conhecidas do PS2.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 19,
-    title: "Dragon Ball Z: Budokai 3",
-    platform: "PS2",
-    year: 2004,
-    genre: "Luta",
-    rating: "Excelente",
-    description: "Um dos jogos de luta mais conhecidos de Dragon Ball no PS2.",
-    searchTerms: "dragon ball dbz budokai 3 goku vegeta",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Dragon_Ball_Z_Budokai_3_cover.jpg"
-  },
+    {
+      id: 16,
+      title: "Grand Theft Auto: Vice City",
+      platform: "PS2",
+      genre: "Ação",
+      year: 2002,
+      cover: "gta-vice-city.jpg",
+      description:
+        "Uma aventura criminal ambientada na vibrante Vice City dos anos 1980.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-  {
-    id: 20,
-    title: "Naruto: Ultimate Ninja",
-    platform: "PS2",
-    year: 2006,
-    genre: "Luta",
-    rating: "Excelente",
-    description: "Combates de Naruto no PlayStation 2.",
-    searchTerms: "naruto ultimate ninja luta",
-    cover: "https://en.wikipedia.org/wiki/Special:Redirect/file/Naruto_Ultimate_Ninja_cover.jpg"
-  }
-];
+    {
+      id: 17,
+      title: "Dragon Ball Z: Budokai 3",
+      platform: "PS2",
+      genre: "Luta",
+      year: 2004,
+      cover: "dragon-ball-z-budokai-3.jpg",
+      description:
+        "Um dos principais jogos de luta de Dragon Ball disponíveis para PS2.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-/* =========================================================
-   ESTADO
-   ========================================================= */
+    {
+      id: 18,
+      title: "Dragon Ball Z: Budokai Tenkaichi 3",
+      platform: "PS2",
+      genre: "Luta",
+      year: 2007,
+      cover: "dragon-ball-z-budokai-tenkaichi-3.jpg",
+      description:
+        "Grande elenco de personagens e batalhas em arenas tridimensionais.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-let currentFilter = "TODOS";
-let currentSearch = "";
+    {
+      id: 19,
+      title: "Shadow of the Colossus",
+      platform: "PS2",
+      genre: "Aventura",
+      year: 2005,
+      cover: "shadow-of-the-colossus.jpg",
+      description:
+        "Uma jornada misteriosa na qual o protagonista precisa enfrentar enormes colossos.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    },
 
-/* =========================================================
-   ELEMENTOS
-   ========================================================= */
+    {
+      id: 20,
+      title: "Resident Evil 4",
+      platform: "PS2",
+      genre: "Ação",
+      year: 2005,
+      cover: "resident-evil-4.jpg",
+      description:
+        "Leon Kennedy parte em uma missão perigosa para resgatar a filha do presidente.",
+      downloadUrl: "#",
+      premiumUrl: "#"
+    }
+  ];
 
-const gamesGrid = document.getElementById("gamesGrid");
-const featuredGames = document.getElementById("featuredGames");
-const gameCount = document.getElementById("gameCount");
+  /* =========================================================
+     ELEMENTOS
+     ========================================================= */
 
-const searchInput = document.getElementById("searchInput");
-const clearSearch = document.getElementById("clearSearch");
-const searchResultText = document.getElementById("searchResultText");
+  const gameGrid =
+    document.querySelector("#gameGrid") ||
+    document.querySelector(".game-grid");
 
-const emptyState = document.getElementById("emptyState");
-const resetFilters = document.getElementById("resetFilters");
+  const searchInput =
+    document.querySelector("#searchInput") ||
+    document.querySelector("#search");
 
-const menuButton = document.getElementById("menuButton");
-const mobileMenu = document.getElementById("mobileMenu");
+  const modal = document.querySelector("#gameModal");
+  const modalContent = document.querySelector("#modalContent");
+  const modalClose = document.querySelector("#modalClose");
+  const modalOverlay = document.querySelector(".modal-overlay");
 
-const gameModal = document.getElementById("gameModal");
-const modalContent = document.getElementById("modalContent");
-const modalClose = document.getElementById("modalClose");
+  const menuToggle =
+    document.querySelector("#menuToggle") ||
+    document.querySelector(".menu-toggle");
 
-/* =========================================================
-   UTILITÁRIOS
-   ========================================================= */
+  const navMenu =
+    document.querySelector("#navMenu") ||
+    document.querySelector(".nav-menu") ||
+    document.querySelector("nav ul");
 
-function normalize(text) {
-  return String(text ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+  /* =========================================================
+     ESTADO
+     ========================================================= */
 
-function escapeHTML(text) {
-  return String(text ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+  let currentPlatform = "TODOS";
+  let currentGenre = "TODOS";
+  let currentSearch = "";
 
-function getInitials(title) {
-  return String(title)
-    .split(/\s+/)
-    .filter(word => word.length > 2)
-    .slice(0, 3)
-    .map(word => word[0])
-    .join("")
-    .toUpperCase();
-}
+  /* =========================================================
+     UTILITÁRIOS
+     ========================================================= */
 
-/* =========================================================
-   FALLBACK DE CAPA
-   ========================================================= */
-
-function fallbackCover(game) {
-  return `
-    <div class="cover-placeholder">
-      <div class="cover-console">🎮</div>
-
-      <strong>
-        ${escapeHTML(getInitials(game.title))}
-      </strong>
-
-      <span>
-        ${escapeHTML(game.title)}
-      </span>
-
-      <small>
-        ${escapeHTML(game.platform)} • ${game.year}
-      </small>
-    </div>
-  `;
-}
-
-/* =========================================================
-   CARREGAMENTO DAS CAPAS
-   ========================================================= */
-
-function loadCover(game, container) {
-  if (!container || !game) {
-    return;
+  function normalizeText(text) {
+    return String(text || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
   }
 
-  container.innerHTML = `
-    <div class="cover-placeholder">
-      <div class="cover-console">🎮</div>
+  function escapeHTML(text) {
+    return String(text || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
-      <strong>
-        ${escapeHTML(getInitials(game.title))}
-      </strong>
-
-      <span>
-        Carregando capa...
-      </span>
-
-      <small>
-        ${escapeHTML(game.platform)}
-      </small>
-    </div>
-  `;
-
-  const image = new Image();
-
-  image.className = "game-cover";
-  image.alt = game.title;
-  image.loading = "lazy";
-  image.decoding = "async";
-
-  image.onload = function () {
-    if (!container.isConnected) {
-      return;
+  function getCoverUrl(game) {
+    if (!game.cover) {
+      return "";
     }
 
-    container.innerHTML = "";
-    container.appendChild(image);
-  };
+    return COVER_PATH + game.cover;
+  }
 
-  image.onerror = function () {
-    if (!container.isConnected) {
-      return;
-    }
+  /* =========================================================
+     PLACEHOLDER DE CAPA
+     ========================================================= */
 
-    container.innerHTML = fallbackCover(game);
-  };
+  function createCoverPlaceholder(game) {
+    const title = escapeHTML(game.title);
 
-  image.src = game.cover;
-}
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-function createCard(game) {
-  return `
-    <article class="game-card">
-
-      <div
-        class="game-cover-wrapper"
-        data-cover="${game.id}"
-      >
-        ${fallbackCover(game)}
-      </div>
-
-      <div class="game-card-body">
-
-        <div class="game-card-top">
-
-          <span class="platform-badge">
-            🎮 ${escapeHTML(game.platform)}
-          </span>
-
-          <span class="game-genre">
-            ${escapeHTML(game.genre)}
-          </span>
-
+    return `
+      <div class="cover-placeholder">
+        <div class="cover-placeholder-platform">
+          ${escapeHTML(game.platform)}
         </div>
 
-        <h3>
-          ${escapeHTML(game.title)}
-        </h3>
+        <div class="cover-placeholder-title">
+          ${title}
+        </div>
 
-        <p>
-          ${escapeHTML(game.description)}
-        </p>
+        <div class="cover-placeholder-year">
+          ${escapeHTML(game.year)}
+        </div>
+      </div>
+    `;
+  }
+
+  /* =========================================================
+     CARD DO JOGO
+     ========================================================= */
+
+  function createGameCard(game) {
+    const card = document.createElement("article");
+
+    card.className = "game-card";
+    card.dataset.id = game.id;
+    card.dataset.platform = game.platform;
+    card.dataset.genre = game.genre;
+
+    const coverUrl = getCoverUrl(game);
+
+    card.innerHTML = `
+      <div class="game-cover">
+
+        <img
+          src="${coverUrl}"
+          alt="Capa de ${escapeHTML(game.title)}"
+          loading="lazy"
+        >
+
+        <div class="game-platform">
+          ${escapeHTML(game.platform)}
+        </div>
+
+      </div>
+
+      <div class="game-info">
+
+        <h3>${escapeHTML(game.title)}</h3>
 
         <div class="game-meta">
-
-          <span>
-            ${game.year}
-          </span>
-
-          <span>
-            ✓ ${escapeHTML(game.rating)}
-          </span>
-
+          <span>${escapeHTML(game.genre)}</span>
+          <span>${escapeHTML(game.year)}</span>
         </div>
 
         <button
+          class="details-btn"
           type="button"
-          class="details-button"
-          data-details="${game.id}"
+          data-game-id="${game.id}"
         >
           Ver detalhes
         </button>
 
       </div>
+    `;
 
-    </article>
-  `;
-}
+    const image = card.querySelector("img");
 
-/* =========================================================
-   PESQUISA
-   ========================================================= */
+    if (image) {
+      image.addEventListener("error", () => {
+        const cover = card.querySelector(".game-cover");
 
-function getFilteredGames() {
-  const search = normalize(currentSearch);
+        if (!cover) {
+          return;
+        }
 
-  return games.filter(game => {
+        image.remove();
 
-    const platformMatch =
-      currentFilter === "TODOS" ||
-      game.platform === currentFilter;
-
-    if (!platformMatch) {
-      return false;
+        cover.insertAdjacentHTML(
+          "afterbegin",
+          createCoverPlaceholder(game)
+        );
+      });
     }
 
-    if (!search) {
-      return true;
+    const detailsButton = card.querySelector(".details-btn");
+
+    if (detailsButton) {
+      detailsButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        openGameModal(game.id);
+      });
     }
 
-    const searchable = normalize(`
-      ${game.title}
-      ${game.platform}
-      ${game.genre}
-      ${game.year}
-      ${game.description}
-      ${game.searchTerms}
-    `);
+    return card;
+  }
 
-    const words = search.split(" ");
+  /* =========================================================
+     RENDERIZAÇÃO
+     ========================================================= */
 
-    return words.every(word =>
-      searchable.includes(word)
-    );
-  });
-}
-
-/* =========================================================
-   CARREGAR CAPAS DOS CARDS
-   ========================================================= */
-
-function loadCovers(list) {
-  list.forEach(game => {
-
-    const container =
-      document.querySelector(
-        `[data-cover="${game.id}"]`
-      );
-
-    if (container) {
-      loadCover(game, container);
+  function renderGames(list = games) {
+    if (!gameGrid) {
+      console.warn("GameHub: #gameGrid não foi encontrado.");
+      return;
     }
-  });
-}
 
-/* =========================================================
-   RENDERIZAR CATÁLOGO
-   ========================================================= */
+    gameGrid.innerHTML = "";
 
-function renderCatalog() {
-  if (!gamesGrid) {
-    return;
-  }
+    if (!list.length) {
+      gameGrid.innerHTML = `
+        <div class="no-results">
+          <h3>Nenhum jogo encontrado</h3>
+          <p>
+            Tente pesquisar outro nome ou alterar os filtros.
+          </p>
+        </div>
+      `;
 
-  const filtered =
-    getFilteredGames();
-
-  gamesGrid.innerHTML =
-    filtered.length
-      ? filtered.map(createCard).join("")
-      : "";
-
-  if (gameCount) {
-    gameCount.textContent =
-      `${filtered.length} ${
-        filtered.length === 1
-          ? "jogo"
-          : "jogos"
-      }`;
-  }
-
-  if (searchResultText) {
-
-    if (currentSearch) {
-
-      searchResultText.textContent =
-        `${filtered.length} resultado${
-          filtered.length === 1
-            ? ""
-            : "s"
-        } para "${currentSearch}"`;
-
-    } else if (currentFilter === "TODOS") {
-
-      searchResultText.textContent =
-        "Todos os jogos do catálogo";
-
-    } else {
-
-      searchResultText.textContent =
-        `Jogos disponíveis para ${currentFilter}`;
-
+      updateResultsCount(0);
+      return;
     }
-  }
 
-  if (emptyState) {
-    emptyState.hidden =
-      filtered.length !== 0;
-  }
+    const fragment = document.createDocumentFragment();
 
-  loadCovers(filtered);
-}
-
-/* =========================================================
-   DESTAQUES
-   ========================================================= */
-
-function renderFeatured() {
-  if (!featuredGames) {
-    return;
-  }
-
-  const featured =
-    games.slice(0, 6);
-
-  featuredGames.innerHTML =
-    featured
-      .map(createCard)
-      .join("");
-
-  loadCovers(featured);
-}
-
-/* =========================================================
-   FILTROS
-   ========================================================= */
-
-function updateFilterButtons() {
-  document
-    .querySelectorAll("[data-filter]")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.filter ===
-          currentFilter
-      );
+    list.forEach((game) => {
+      fragment.appendChild(createGameCard(game));
     });
-}
 
-function setFilter(filter) {
+    gameGrid.appendChild(fragment);
 
-  if (
-    filter !== "TODOS" &&
-    filter !== "PSP" &&
-    filter !== "PS2"
-  ) {
-    filter = "TODOS";
+    updateResultsCount(list.length);
   }
 
-  currentFilter = filter;
+  /* =========================================================
+     CONTADOR DE RESULTADOS
+     ========================================================= */
 
-  updateFilterButtons();
-  renderCatalog();
-}
+  function updateResultsCount(count) {
+    const possibleCounters = [
+      "#resultsCount",
+      "#gameCount",
+      ".results-count",
+      ".game-count"
+    ];
 
-/* =========================================================
-   EVENTO DA PESQUISA
-   ========================================================= */
+    let counter = null;
 
-function updateSearch() {
+    for (const selector of possibleCounters) {
+      const element = document.querySelector(selector);
 
-  currentSearch =
-    searchInput
-      ? searchInput.value
-      : "";
-
-  renderCatalog();
-}
-
-if (searchInput) {
-
-  searchInput.addEventListener(
-    "input",
-    updateSearch
-  );
-
-  searchInput.addEventListener(
-    "search",
-    updateSearch
-  );
-}
-
-/* =========================================================
-   LIMPAR PESQUISA
-   ========================================================= */
-
-if (clearSearch) {
-
-  clearSearch.addEventListener(
-    "click",
-    () => {
-
-      currentSearch = "";
-
-      if (searchInput) {
-        searchInput.value = "";
-        searchInput.focus();
+      if (element) {
+        counter = element;
+        break;
       }
-
-      renderCatalog();
     }
-  );
-}
 
-/* =========================================================
-   BOTÕES DE FILTRO
-   ========================================================= */
-
-document
-  .querySelectorAll("[data-filter]")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        setFilter(
-          button.dataset.filter
-        );
-
-        document
-          .getElementById("catalogo")
-          ?.scrollIntoView({
-            behavior: "smooth"
-          });
-      }
-    );
-  });
-
-/* =========================================================
-   PLATAFORMAS
-   ========================================================= */
-
-document
-  .querySelectorAll("[data-platform]")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      event => {
-
-        event.preventDefault();
-
-        const platform =
-          button.dataset.platform;
-
-        if (
-          platform === "PSP" ||
-          platform === "PS2"
-        ) {
-
-          setFilter(platform);
-
-          document
-            .getElementById("catalogo")
-            ?.scrollIntoView({
-              behavior: "smooth"
-            });
-
-          closeMenu();
-        }
-      }
-    );
-  });
-
-/* =========================================================
-   VER TODOS
-   ========================================================= */
-
-document
-  .querySelectorAll(
-    'a[href="#catalogo"]'
-  )
-  .forEach(link => {
-
-    link.addEventListener(
-      "click",
-      event => {
-
-        event.preventDefault();
-
-        currentFilter = "TODOS";
-        currentSearch = "";
-
-        if (searchInput) {
-          searchInput.value = "";
-        }
-
-        updateFilterButtons();
-        renderCatalog();
-
-        document
-          .getElementById("catalogo")
-          ?.scrollIntoView({
-            behavior: "smooth"
-          });
-
-        closeMenu();
-      }
-    );
-  });
-
-/* =========================================================
-   RESETAR FILTROS
-   ========================================================= */
-
-if (resetFilters) {
-
-  resetFilters.addEventListener(
-    "click",
-    () => {
-
-      currentFilter = "TODOS";
-      currentSearch = "";
-
-      if (searchInput) {
-        searchInput.value = "";
-      }
-
-      updateFilterButtons();
-      renderCatalog();
-    }
-  );
-}
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-function forceModalVisible() {
-
-  if (!gameModal) {
-    return;
-  }
-
-  gameModal.classList.add("open");
-
-  gameModal.style.display = "flex";
-  gameModal.style.visibility = "visible";
-  gameModal.style.opacity = "1";
-  gameModal.style.pointerEvents = "auto";
-
-  gameModal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.classList.add(
-    "modal-open"
-  );
-}
-
-function openGame(gameId) {
-
-  const game =
-    games.find(
-      item =>
-        item.id === Number(gameId)
-    );
-
-  if (
-    !game ||
-    !gameModal ||
-    !modalContent
-  ) {
-    return;
-  }
-
-  modalContent.innerHTML = `
-    <div class="modal-game">
-
-      <div
-        class="modal-game-cover"
-        data-modal-cover="${game.id}"
-      >
-        ${fallbackCover(game)}
-      </div>
-
-      <div class="modal-game-info">
-
-        <span class="platform-badge">
-          🎮 ${escapeHTML(game.platform)}
-        </span>
-
-        <h2>
-          ${escapeHTML(game.title)}
-        </h2>
-
-        <p class="modal-description">
-          ${escapeHTML(game.description)}
-        </p>
-
-        <div class="modal-details">
-
-          <div>
-            <strong>Plataforma</strong>
-            <span>
-              ${escapeHTML(game.platform)}
-            </span>
-          </div>
-
-          <div>
-            <strong>Ano</strong>
-            <span>
-              ${game.year}
-            </span>
-          </div>
-
-          <div>
-            <strong>Gênero</strong>
-            <span>
-              ${escapeHTML(game.genre)}
-            </span>
-          </div>
-
-          <div>
-            <strong>Compatibilidade</strong>
-            <span>
-              ✓ ${escapeHTML(game.rating)}
-            </span>
-          </div>
-
-        </div>
-
-        <div class="modal-actions">
-
-          <button
-            type="button"
-            class="details-button"
-            data-modal-close
-          >
-            Fechar
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-  `;
-
-  modalContent.style.display = "block";
-  modalContent.style.visibility = "visible";
-  modalContent.style.opacity = "1";
-
-  forceModalVisible();
-
-  const dialog =
-    gameModal.querySelector(
-      ".modal-dialog"
-    );
-
-  if (dialog) {
-
-    dialog.style.position = "relative";
-    dialog.style.zIndex = "2";
-    dialog.style.visibility = "visible";
-    dialog.style.opacity = "1";
-  }
-
-  const cover =
-    modalContent.querySelector(
-      `[data-modal-cover="${game.id}"]`
-    );
-
-  loadCover(game, cover);
-}
-
-function closeModal() {
-
-  if (!gameModal) {
-    return;
-  }
-
-  gameModal.classList.remove("open");
-
-  gameModal.style.display = "none";
-  gameModal.style.visibility = "hidden";
-  gameModal.style.opacity = "0";
-  gameModal.style.pointerEvents = "none";
-
-  gameModal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  document.body.classList.remove(
-    "modal-open"
-  );
-}
-
-/* =========================================================
-   CLIQUES
-   ========================================================= */
-
-document.addEventListener(
-  "click",
-  event => {
-
-    const target =
-      event.target;
-
-    if (!(target instanceof Element)) {
+    if (!counter) {
       return;
     }
 
-    const details =
-      target.closest(
-        "[data-details]"
-      );
-
-    if (details) {
-
-      openGame(
-        details.dataset.details
-      );
-
-      return;
-    }
-
-    const closeButton =
-      target.closest(
-        "[data-modal-close]"
-      );
-
-    if (closeButton) {
-      closeModal();
-    }
-  }
-);
-
-/* =========================================================
-   BOTÃO X
-   ========================================================= */
-
-if (modalClose) {
-
-  modalClose.addEventListener(
-    "click",
-    closeModal
-  );
-}
-
-/* =========================================================
-   CLIQUE NO FUNDO
-   ========================================================= */
-
-if (gameModal) {
-
-  gameModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target instanceof Element &&
-        event.target.classList.contains(
-          "modal-overlay"
-        )
-      ) {
-        closeModal();
-      }
-    }
-  );
-}
-
-/* =========================================================
-   ESC
-   ========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (event.key === "Escape") {
-      closeModal();
-    }
-  }
-);
-
-/* =========================================================
-   MENU MOBILE
-   ========================================================= */
-
-function openMenu() {
-
-  if (!mobileMenu) {
-    return;
+    counter.textContent = `${count} jogos`;
   }
 
-  mobileMenu.classList.add("open");
+  /* =========================================================
+     FILTROS
+     ========================================================= */
 
-  if (menuButton) {
+  function applyFilters() {
+    const search = normalizeText(currentSearch);
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      "true"
-    );
-  }
-}
+    const filtered = games.filter((game) => {
+      const title = normalizeText(game.title);
+      const genre = normalizeText(game.genre);
+      const platform = normalizeText(game.platform);
+      const description = normalizeText(game.description);
 
-function closeMenu() {
+      const matchesSearch =
+        !search ||
+        title.includes(search) ||
+        genre.includes(search) ||
+        platform.includes(search) ||
+        description.includes(search);
 
-  if (!mobileMenu) {
-    return;
-  }
+      const matchesPlatform =
+        currentPlatform === "TODOS" ||
+        normalizeText(game.platform) === normalizeText(currentPlatform);
 
-  mobileMenu.classList.remove(
-    "open"
-  );
+      const matchesGenre =
+        currentGenre === "TODOS" ||
+        normalizeText(game.genre) === normalizeText(currentGenre);
 
-  if (menuButton) {
+      return matchesSearch && matchesPlatform && matchesGenre;
+    });
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-  }
-}
-
-if (menuButton) {
-
-  menuButton.addEventListener(
-    "click",
-    event => {
-
-      event.stopPropagation();
-
-      if (
-        mobileMenu &&
-        mobileMenu.classList.contains(
-          "open"
-        )
-      ) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    }
-  );
-}
-
-document
-  .querySelectorAll(
-    "#mobileMenu a"
-  )
-  .forEach(link => {
-
-    link.addEventListener(
-      "click",
-      closeMenu
-    );
-  });
-
-/* =========================================================
-   NAVEGAÇÃO INTERNA
-   ========================================================= */
-
-document
-  .querySelectorAll("[data-scroll]")
-  .forEach(link => {
-
-    link.addEventListener(
-      "click",
-      event => {
-
-        const href =
-          link.getAttribute("href");
-
-        if (
-          !href ||
-          !href.startsWith("#")
-        ) {
-          return;
-        }
-
-        const target =
-          document.querySelector(
-            href
-          );
-
-        if (!target) {
-          return;
-        }
-
-        event.preventDefault();
-
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-        closeMenu();
-      }
-    );
-  });
-
-/* =========================================================
-   GUIAS
-   ========================================================= */
-
-const guides = {
-
-  psp: {
-    title: "Emulação PSP",
-    platform: "PSP",
-    text: `
-      <p>
-        O PSP possui uma grande biblioteca de jogos
-        e pode ser emulado em dispositivos compatíveis.
-      </p>
-
-      <p>
-        O desempenho varia de acordo com o aparelho,
-        o jogo e as configurações utilizadas.
-      </p>
-
-      <p>
-        Utilize somente jogos e arquivos que você
-        tenha direito de utilizar.
-      </p>
-    `
-  },
-
-  ps2: {
-    title: "Emulação PS2",
-    platform: "PS2",
-    text: `
-      <p>
-        A emulação de PlayStation 2 pode exigir
-        mais recursos do dispositivo.
-      </p>
-
-      <p>
-        Resolução, velocidade e outras configurações
-        podem influenciar o desempenho.
-      </p>
-
-      <p>
-        Utilize somente jogos e arquivos que você
-        tenha direito de utilizar.
-      </p>
-    `
-  },
-
-  dicas: {
-    title: "Dicas para jogadores",
-    platform: "GAMEHUB",
-    text: `
-      <p>
-        Use a pesquisa para encontrar rapidamente
-        um jogo pelo nome, plataforma ou gênero.
-      </p>
-
-      <p>
-        Os filtros PSP e PS2 permitem separar
-        rapidamente os catálogos.
-      </p>
-
-      <p>
-        Abra os detalhes de cada jogo para visualizar
-        suas principais informações.
-      </p>
-    `
-  }
-};
-
-/* =========================================================
-   ABRIR GUIA
-   ========================================================= */
-
-function openGuide(type) {
-
-  const guide = guides[type];
-
-  if (
-    !guide ||
-    !gameModal ||
-    !modalContent
-  ) {
-    return;
+    renderGames(filtered);
   }
 
-  modalContent.innerHTML = `
-    <div class="modal-game">
-
-      <div class="modal-game-cover">
-
-        <div class="cover-placeholder">
-
-          <div class="cover-console">
-            ⚙️
-          </div>
-
-          <strong>
-            ${escapeHTML(
-              guide.platform
-            )}
-          </strong>
-
-          <span>
-            Guia GameHub
-          </span>
-
-        </div>
-
-      </div>
-
-      <div class="modal-game-info">
-
-        <span class="platform-badge">
-          ${escapeHTML(
-            guide.platform
-          )}
-        </span>
-
-        <h2>
-          ${escapeHTML(
-            guide.title
-          )}
-        </h2>
-
-        <div class="modal-description">
-          ${guide.text}
-        </div>
-
-        <div class="modal-actions">
-
-          <button
-            type="button"
-            class="details-button"
-            data-modal-close
-          >
-            Fechar
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-  `;
-
-  modalContent.style.display = "block";
-  modalContent.style.visibility = "visible";
-  modalContent.style.opacity = "1";
-
-  forceModalVisible();
-
-  const dialog =
-    gameModal.querySelector(
-      ".modal-dialog"
-    );
-
-  if (dialog) {
-
-    dialog.style.position = "relative";
-    dialog.style.zIndex = "2";
-    dialog.style.visibility = "visible";
-    dialog.style.opacity = "1";
-  }
-}
-
-/* =========================================================
-   BOTÕES DOS GUIAS
-   ========================================================= */
-
-document
-  .querySelectorAll("[data-guide]")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      event => {
-
-        event.preventDefault();
-
-        openGuide(
-          button.dataset.guide
-        );
-      }
-    );
-  });
-
-/* =========================================================
-   INICIALIZAÇÃO
-   ========================================================= */
-
-function initialize() {
-
-  currentFilter = "TODOS";
-  currentSearch = "";
+  /* =========================================================
+     PESQUISA
+     ========================================================= */
 
   if (searchInput) {
-    searchInput.value = "";
+    searchInput.addEventListener("input", () => {
+      currentSearch = searchInput.value;
+      applyFilters();
+    });
   }
 
-  updateFilterButtons();
+  /* =========================================================
+     BOTÕES DE PLATAFORMA / FILTROS
+     ========================================================= */
 
-  if (gameModal) {
-
-    gameModal.classList.remove(
-      "open"
+  function setupFilterButtons() {
+    const filterButtons = document.querySelectorAll(
+      "[data-platform], [data-filter], [data-genre]"
     );
 
-    gameModal.style.display = "none";
-    gameModal.style.visibility = "hidden";
-    gameModal.style.opacity = "0";
-    gameModal.style.pointerEvents = "none";
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
 
-    gameModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+        const platform = button.dataset.platform;
+        const filter = button.dataset.filter;
+        const genre = button.dataset.genre;
+
+        if (platform) {
+          currentPlatform = platform.toUpperCase();
+        }
+
+        if (genre) {
+          currentGenre = genre.toUpperCase();
+        }
+
+        if (filter) {
+          const normalizedFilter = normalizeText(filter);
+
+          if (
+            normalizedFilter === "todos" ||
+            normalizedFilter === "all"
+          ) {
+            currentPlatform = "TODOS";
+            currentGenre = "TODOS";
+          } else if (
+            normalizedFilter === "psp" ||
+            normalizedFilter === "ps2"
+          ) {
+            currentPlatform = filter.toUpperCase();
+          } else {
+            currentGenre = filter.toUpperCase();
+          }
+        }
+
+        filterButtons.forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        applyFilters();
+      });
+    });
   }
 
-  if (mobileMenu) {
-    mobileMenu.classList.remove(
-      "open"
+  /* =========================================================
+     LINKS DE PLATAFORMA
+     ========================================================= */
+
+  function setupPlatformLinks() {
+    const links = document.querySelectorAll(
+      'a[href="#psp"], a[href="#ps2"], a[href="#todos"], a[href="#all"]'
     );
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const target = normalizeText(
+          link.getAttribute("href").replace("#", "")
+        );
+
+        if (target === "psp") {
+          currentPlatform = "PSP";
+          currentGenre = "TODOS";
+        } else if (target === "ps2") {
+          currentPlatform = "PS2";
+          currentGenre = "TODOS";
+        } else {
+          currentPlatform = "TODOS";
+          currentGenre = "TODOS";
+        }
+
+        applyFilters();
+      });
+    });
   }
 
-  if (menuButton) {
+  /* =========================================================
+     MODAL
+     ========================================================= */
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      "false"
+  function openGameModal(gameId) {
+    if (!modal || !modalContent) {
+      console.warn("GameHub: modal não encontrado.");
+      return;
+    }
+
+    const game = games.find(
+      (item) => Number(item.id) === Number(gameId)
     );
+
+    if (!game) {
+      return;
+    }
+
+    const coverUrl = getCoverUrl(game);
+
+    modalContent.innerHTML = `
+      <div class="modal-game">
+
+        <div class="modal-game-cover">
+
+          <img
+            src="${coverUrl}"
+            alt="Capa de ${escapeHTML(game.title)}"
+          >
+
+        </div>
+
+        <div class="modal-game-info">
+
+          <span class="modal-platform">
+            ${escapeHTML(game.platform)}
+          </span>
+
+          <h2>${escapeHTML(game.title)}</h2>
+
+          <div class="modal-meta">
+            <span><strong>Gênero:</strong> ${escapeHTML(game.genre)}</span>
+            <span><strong>Ano:</strong> ${escapeHTML(game.year)}</span>
+          </div>
+
+          <p>
+            ${escapeHTML(game.description)}
+          </p>
+
+          <div class="modal-actions">
+
+            <a
+              href="${game.downloadUrl}"
+              class="modal-button primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download
+            </a>
+
+            <a
+              href="${game.premiumUrl}"
+              class="modal-button secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Premium
+            </a>
+
+            <button
+              type="button"
+              class="modal-button close-modal-button"
+              id="closeModalInside"
+            >
+              Fechar
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+    const modalImage = modalContent.querySelector(
+      ".modal-game-cover img"
+    );
+
+    if (modalImage) {
+      modalImage.addEventListener("error", () => {
+        const parent = modalImage.parentElement;
+
+        if (!parent) {
+          return;
+        }
+
+        modalImage.remove();
+
+        parent.insertAdjacentHTML(
+          "afterbegin",
+          createCoverPlaceholder(game)
+        );
+      });
+    }
+
+    const insideClose = modalContent.querySelector(
+      "#closeModalInside"
+    );
+
+    if (insideClose) {
+      insideClose.addEventListener("click", closeGameModal);
+    }
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("modal-open");
+
+    document.body.style.overflow = "hidden";
   }
 
-  renderFeatured();
-  renderCatalog();
+  function closeGameModal() {
+    if (!modal) {
+      return;
+    }
+
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+
+    document.body.classList.remove("modal-open");
+
+    document.body.style.overflow = "";
+  }
+
+  if (modalClose) {
+    modalClose.addEventListener("click", closeGameModal);
+  }
+
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", closeGameModal);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeGameModal();
+    }
+  });
+
+  /* =========================================================
+     MENU MOBILE
+     ========================================================= */
+
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      navMenu.classList.toggle("open");
+      menuToggle.classList.toggle("open");
+
+      const expanded =
+        menuToggle.getAttribute("aria-expanded") === "true";
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        String(!expanded)
+      );
+    });
+  }
+
+  /* Fecha o menu ao clicar em um link */
+  if (navMenu) {
+    navMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("open");
+
+        if (menuToggle) {
+          menuToggle.classList.remove("open");
+          menuToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+  }
+
+  /* =========================================================
+     BOTÃO "TODOS"
+     ========================================================= */
+
+  const allButtons = document.querySelectorAll(
+    '[data-filter="todos"], [data-filter="all"], [data-platform="todos"], [data-platform="all"]'
+  );
+
+  allButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      currentPlatform = "TODOS";
+      currentGenre = "TODOS";
+      currentSearch = "";
+
+      if (searchInput) {
+        searchInput.value = "";
+      }
+
+      applyFilters();
+    });
+  });
+
+  /* =========================================================
+     INICIALIZAÇÃO
+     ========================================================= */
+
+  setupFilterButtons();
+  setupPlatformLinks();
+
+  renderGames(games);
 
   console.log(
-    `GameHub carregado: ${games.length} jogos.`
+    `GameHub carregado: ${games.length} jogos disponíveis.`
   );
-}
-
-/* =========================================================
-   INICIAR
-   ========================================================= */
-
-if (
-  document.readyState === "loading"
-) {
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initialize
-  );
-
-} else {
-
-  initialize();
-}
+});
