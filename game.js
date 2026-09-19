@@ -1,19 +1,10 @@
-// ============================================================
-// GAMEHUB PSP & PS2
-// Catálogo principal
-// ============================================================
-
 "use strict";
 
-// ------------------------------------------------------------
-// CONFIGURAÇÃO
-// ------------------------------------------------------------
+// ============================================================
+// GAMEHUB PSP & PS2
+// ============================================================
 
 const COVER_PATH = "./images/covers/";
-
-// ------------------------------------------------------------
-// CATÁLOGO
-// ------------------------------------------------------------
 
 const games = [
   {
@@ -258,38 +249,39 @@ const games = [
   }
 ];
 
-// ------------------------------------------------------------
-// ELEMENTOS
-// ------------------------------------------------------------
+// ============================================================
+// ELEMENTOS DO HTML
+// ============================================================
 
-const gameGrid = document.getElementById("gameGrid");
+const gamesGrid = document.getElementById("gamesGrid");
+const featuredGames = document.getElementById("featuredGames");
 const gameCount = document.getElementById("gameCount");
 const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+const searchResultText = document.getElementById("searchResultText");
+const emptyState = document.getElementById("emptyState");
+const resetFilters = document.getElementById("resetFilters");
 
 const filterButtons = document.querySelectorAll(
-  "[data-filter], .filter-btn, .platform-filter"
+  "[data-filter]"
 );
 
-const menuButton =
-  document.getElementById("menuToggle") ||
-  document.querySelector(".menu-toggle") ||
-  document.querySelector(".hamburger");
+const platformButtons = document.querySelectorAll(
+  "[data-platform]"
+);
 
-const mobileMenu =
-  document.getElementById("mobileMenu") ||
-  document.querySelector(".mobile-menu") ||
-  document.querySelector(".nav-menu");
+const menuButton = document.getElementById("menuButton");
+const mobileMenu = document.getElementById("mobileMenu");
 
-// Modal
 const modal = document.getElementById("gameModal");
 const modalContent = document.getElementById("modalContent");
 const modalClose = document.getElementById("modalClose");
 
-let currentFilter = "todos";
+let currentFilter = "TODOS";
 
-// ------------------------------------------------------------
+// ============================================================
 // UTILIDADES
-// ------------------------------------------------------------
+// ============================================================
 
 function normalizeText(text) {
   return String(text || "")
@@ -297,10 +289,6 @@ function normalizeText(text) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
-}
-
-function getCover(game) {
-  return `${COVER_PATH}${game.cover}`;
 }
 
 function escapeHTML(text) {
@@ -312,30 +300,80 @@ function escapeHTML(text) {
     .replace(/'/g, "&#039;");
 }
 
-// ------------------------------------------------------------
-// PLACEHOLDER DE CAPA
-// ------------------------------------------------------------
+function getCover(game) {
+  return `${COVER_PATH}${game.cover}`;
+}
 
-function createCoverFallback(game) {
+// ============================================================
+// CARD DO JOGO
+// ============================================================
+
+function createGameCard(game) {
   return `
-    <div class="game-cover-placeholder">
-      <span>🎮</span>
-      <strong>${escapeHTML(game.title)}</strong>
-      <small>${escapeHTML(game.platform)}</small>
-    </div>
+    <article class="game-card" data-game-id="${game.id}">
+
+      <div class="game-card-image">
+
+        <img
+          src="${getCover(game)}"
+          alt="Capa de ${escapeHTML(game.title)}"
+          loading="lazy"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+
+        <div
+          class="game-cover-placeholder"
+          style="display:none;"
+        >
+          <span>🎮</span>
+          <strong>${escapeHTML(game.title)}</strong>
+          <small>${escapeHTML(game.platform)}</small>
+        </div>
+
+      </div>
+
+      <div class="game-card-content">
+
+        <span class="game-platform">
+          ${escapeHTML(game.platform)}
+        </span>
+
+        <h3>
+          ${escapeHTML(game.title)}
+        </h3>
+
+        <div class="game-meta">
+          <span>${escapeHTML(game.genre)}</span>
+          <span>${escapeHTML(game.year)}</span>
+        </div>
+
+        <button
+          type="button"
+          class="game-details-btn"
+          data-game-id="${game.id}"
+        >
+          Ver detalhes
+        </button>
+
+      </div>
+
+    </article>
   `;
 }
 
-// ------------------------------------------------------------
-// FILTRO + PESQUISA
-// ------------------------------------------------------------
+// ============================================================
+// FILTRO
+// ============================================================
 
 function getFilteredGames() {
-  const searchTerm = normalizeText(searchInput ? searchInput.value : "");
+  const searchTerm = normalizeText(
+    searchInput ? searchInput.value : ""
+  );
 
   return games.filter((game) => {
-    const matchesFilter =
-      currentFilter === "todos" ||
+
+    const matchesPlatform =
+      currentFilter === "TODOS" ||
       normalizeText(game.platform) === normalizeText(currentFilter);
 
     const searchableText = normalizeText(
@@ -343,127 +381,140 @@ function getFilteredGames() {
     );
 
     const matchesSearch =
-      searchTerm === "" || searchableText.includes(searchTerm);
+      searchTerm === "" ||
+      searchableText.includes(searchTerm);
 
-    return matchesFilter && matchesSearch;
+    return matchesPlatform && matchesSearch;
   });
 }
 
-// ------------------------------------------------------------
-// RENDERIZAÇÃO DO CATÁLOGO
-// ------------------------------------------------------------
+// ============================================================
+// RENDERIZAR CATÁLOGO
+// ============================================================
 
 function renderGames() {
-  if (!gameGrid) {
-    console.error("GameHub: elemento #gameGrid não encontrado.");
+
+  if (!gamesGrid) {
+    console.error(
+      "GameHub: #gamesGrid não foi encontrado no HTML."
+    );
     return;
   }
 
   const filteredGames = getFilteredGames();
 
-  if (gameCount) {
-    gameCount.textContent = `${filteredGames.length} ${
-      filteredGames.length === 1 ? "jogo" : "jogos"
+  gameCount.textContent =
+    `${filteredGames.length} ${
+      filteredGames.length === 1
+        ? "jogo"
+        : "jogos"
     }`;
+
+  if (searchInput && searchInput.value.trim() !== "") {
+    searchResultText.textContent =
+      `${filteredGames.length} resultado${
+        filteredGames.length === 1 ? "" : "s"
+      } para "${searchInput.value}"`;
+  } else {
+    searchResultText.textContent =
+      "Todos os jogos do catálogo";
   }
 
   if (filteredGames.length === 0) {
-    gameGrid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔎</div>
-        <h3>Nenhum jogo encontrado</h3>
-        <p>Tente outro nome ou altere o filtro de plataforma.</p>
-      </div>
-    `;
+
+    gamesGrid.innerHTML = "";
+
+    if (emptyState) {
+      emptyState.hidden = false;
+    }
+
     return;
   }
 
-  gameGrid.innerHTML = filteredGames
-    .map(
-      (game) => `
-        <article class="game-card" data-game-id="${game.id}">
-          <div class="game-card-image">
-            <img
-              src="${getCover(game)}"
-              alt="Capa de ${escapeHTML(game.title)}"
-              loading="lazy"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-            />
+  if (emptyState) {
+    emptyState.hidden = true;
+  }
 
-            <div class="game-cover-placeholder" style="display:none;">
-              <span>🎮</span>
-              <strong>${escapeHTML(game.title)}</strong>
-              <small>${escapeHTML(game.platform)}</small>
-            </div>
-          </div>
-
-          <div class="game-card-content">
-            <span class="game-platform">${escapeHTML(game.platform)}</span>
-
-            <h3>${escapeHTML(game.title)}</h3>
-
-            <div class="game-meta">
-              <span>${escapeHTML(game.genre)}</span>
-              <span>${escapeHTML(game.year)}</span>
-            </div>
-
-            <button
-              type="button"
-              class="game-details-btn"
-              data-game-id="${game.id}"
-            >
-              Ver detalhes
-            </button>
-          </div>
-        </article>
-      `
-    )
+  gamesGrid.innerHTML = filteredGames
+    .map(createGameCard)
     .join("");
 
   attachGameButtons();
 }
 
-// ------------------------------------------------------------
-// BOTÕES "VER DETALHES"
-// ------------------------------------------------------------
+// ============================================================
+// DESTAQUES
+// ============================================================
 
-function attachGameButtons() {
-  const buttons = document.querySelectorAll(".game-details-btn");
+function renderFeaturedGames() {
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const id = Number(button.dataset.gameId);
-      const game = games.find((item) => item.id === id);
+  if (!featuredGames) return;
 
-      if (game) {
-        openGameModal(game);
-      }
-    });
-  });
+  const featured = games.slice(0, 4);
+
+  featuredGames.innerHTML = featured
+    .map(createGameCard)
+    .join("");
+
+  attachGameButtons();
 }
 
-// ------------------------------------------------------------
+// ============================================================
+// BOTÕES DE DETALHES
+// ============================================================
+
+function attachGameButtons() {
+
+  document
+    .querySelectorAll(".game-details-btn")
+    .forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        const id = Number(
+          button.dataset.gameId
+        );
+
+        const game = games.find(
+          (item) => item.id === id
+        );
+
+        if (game) {
+          openGameModal(game);
+        }
+      });
+    });
+}
+
+// ============================================================
 // MODAL
-// ------------------------------------------------------------
+// ============================================================
 
 function openGameModal(game) {
+
   if (!modal || !modalContent) return;
 
   modalContent.innerHTML = `
+
     <div class="modal-game">
 
       <div class="modal-cover">
+
         <img
           src="${getCover(game)}"
           alt="Capa de ${escapeHTML(game.title)}"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        />
+        >
 
-        <div class="game-cover-placeholder" style="display:none;">
+        <div
+          class="game-cover-placeholder"
+          style="display:none;"
+        >
           <span>🎮</span>
           <strong>${escapeHTML(game.title)}</strong>
           <small>${escapeHTML(game.platform)}</small>
         </div>
+
       </div>
 
       <div class="modal-info">
@@ -472,29 +523,39 @@ function openGameModal(game) {
           ${escapeHTML(game.platform)}
         </span>
 
-        <h2>${escapeHTML(game.title)}</h2>
+        <h2>
+          ${escapeHTML(game.title)}
+        </h2>
 
         <div class="modal-meta">
-          <span><strong>Plataforma:</strong> ${escapeHTML(
-            game.platform
-          )}</span>
 
-          <span><strong>Gênero:</strong> ${escapeHTML(game.genre)}</span>
+          <span>
+            <strong>Plataforma:</strong>
+            ${escapeHTML(game.platform)}
+          </span>
 
-          <span><strong>Ano:</strong> ${escapeHTML(game.year)}</span>
+          <span>
+            <strong>Gênero:</strong>
+            ${escapeHTML(game.genre)}
+          </span>
+
+          <span>
+            <strong>Ano:</strong>
+            ${escapeHTML(game.year)}
+          </span>
+
         </div>
 
-        <p>${escapeHTML(game.description)}</p>
+        <p>
+          ${escapeHTML(game.description)}
+        </p>
 
         <div class="modal-actions">
+
           <a
             href="${game.downloadUrl}"
             class="btn-primary"
-            ${
-              game.downloadUrl === "#"
-                ? 'onclick="event.preventDefault(); alert(\'Link ainda não configurado.\');"'
-                : ""
-            }
+            onclick="if(this.getAttribute('href') === '#'){event.preventDefault(); alert('Link ainda não configurado.');}"
           >
             🎮 Acessar
           </a>
@@ -502,14 +563,11 @@ function openGameModal(game) {
           <a
             href="${game.premiumUrl}"
             class="btn-secondary"
-            ${
-              game.premiumUrl === "#"
-                ? 'onclick="event.preventDefault(); alert(\'Link ainda não configurado.\');"'
-                : ""
-            }
+            onclick="if(this.getAttribute('href') === '#'){event.preventDefault(); alert('Link ainda não configurado.');}"
           >
             ℹ️ Informações
           </a>
+
         </div>
 
       </div>
@@ -519,117 +577,268 @@ function openGameModal(game) {
 
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
+
   document.body.style.overflow = "hidden";
 }
 
 function closeGameModal() {
+
   if (!modal) return;
 
   modal.classList.remove("open");
   modal.setAttribute("aria-hidden", "true");
+
   document.body.style.overflow = "";
 }
 
-// ------------------------------------------------------------
+// ============================================================
 // EVENTOS DO MODAL
-// ------------------------------------------------------------
+// ============================================================
 
 if (modalClose) {
-  modalClose.addEventListener("click", closeGameModal);
+  modalClose.addEventListener(
+    "click",
+    closeGameModal
+  );
 }
 
 if (modal) {
-  const overlay = modal.querySelector(".modal-overlay");
+
+  const overlay =
+    modal.querySelector(".modal-overlay");
 
   if (overlay) {
-    overlay.addEventListener("click", closeGameModal);
+    overlay.addEventListener(
+      "click",
+      closeGameModal
+    );
   }
+}
 
-  modal.addEventListener("click", (event) => {
-    if (event.target === modal) {
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (event.key === "Escape") {
       closeGameModal();
     }
-  });
-}
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    closeGameModal();
   }
-});
+);
 
-// ------------------------------------------------------------
+// ============================================================
 // PESQUISA
-// ------------------------------------------------------------
+// ============================================================
 
 if (searchInput) {
-  searchInput.addEventListener("input", renderGames);
+
+  searchInput.addEventListener(
+    "input",
+    renderGames
+  );
 }
 
-// ------------------------------------------------------------
-// FILTROS
-// ------------------------------------------------------------
+if (clearSearch) {
 
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const filter =
-      button.dataset.filter ||
-      button.dataset.platform ||
-      button.getAttribute("data-value");
+  clearSearch.addEventListener(
+    "click",
+    () => {
 
-    if (!filter) return;
+      searchInput.value = "";
 
-    currentFilter = normalizeText(filter);
+      currentFilter = "TODOS";
 
-    if (
-      currentFilter === "todos" ||
-      currentFilter === "all" ||
-      currentFilter === ""
-    ) {
-      currentFilter = "todos";
-    } else if (currentFilter === "playstation portable") {
-      currentFilter = "PSP";
-    } else if (currentFilter === "playstation 2") {
-      currentFilter = "PS2";
+      filterButtons.forEach(
+        (button) => {
+          button.classList.remove("active");
+        }
+      );
+
+      const allButton =
+        document.querySelector(
+          '[data-filter="TODOS"]'
+        );
+
+      if (allButton) {
+        allButton.classList.add("active");
+      }
+
+      renderGames();
+
+      searchInput.focus();
     }
+  );
+}
 
-    filterButtons.forEach((item) => {
-      item.classList.remove("active");
-    });
+// ============================================================
+// FILTROS PSP / PS2
+// ============================================================
 
-    button.classList.add("active");
+filterButtons.forEach(
+  (button) => {
 
-    renderGames();
-  });
-});
+    button.addEventListener(
+      "click",
+      () => {
 
-// ------------------------------------------------------------
-// MENU
-// ------------------------------------------------------------
+        currentFilter =
+          button.dataset.filter || "TODOS";
+
+        filterButtons.forEach(
+          (item) => {
+            item.classList.remove("active");
+          }
+        );
+
+        button.classList.add("active");
+
+        renderGames();
+
+        document
+          .getElementById("catalogo")
+          ?.scrollIntoView({
+            behavior: "smooth"
+          });
+      }
+    );
+  }
+);
+
+// ============================================================
+// CARTÕES DE PLATAFORMA
+// ============================================================
+
+platformButtons.forEach(
+  (button) => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const platform =
+          button.dataset.platform;
+
+        if (!platform) return;
+
+        currentFilter = platform;
+
+        filterButtons.forEach(
+          (item) => {
+
+            item.classList.remove("active");
+
+            if (
+              item.dataset.filter === platform
+            ) {
+              item.classList.add("active");
+            }
+          }
+        );
+
+        renderGames();
+
+        document
+          .getElementById("catalogo")
+          ?.scrollIntoView({
+            behavior: "smooth"
+          });
+      }
+    );
+  }
+);
+
+// ============================================================
+// RESETAR FILTROS
+// ============================================================
+
+if (resetFilters) {
+
+  resetFilters.addEventListener(
+    "click",
+    () => {
+
+      currentFilter = "TODOS";
+
+      if (searchInput) {
+        searchInput.value = "";
+      }
+
+      filterButtons.forEach(
+        (button) => {
+          button.classList.remove("active");
+        }
+      );
+
+      const allButton =
+        document.querySelector(
+          '[data-filter="TODOS"]'
+        );
+
+      if (allButton) {
+        allButton.classList.add("active");
+      }
+
+      renderGames();
+    }
+  );
+}
+
+// ============================================================
+// MENU MOBILE
+// ============================================================
 
 if (menuButton && mobileMenu) {
-  menuButton.addEventListener("click", () => {
-    mobileMenu.classList.toggle("open");
-    menuButton.classList.toggle("open");
-  });
+
+  menuButton.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        mobileMenu.classList.toggle("open");
+
+      menuButton.classList.toggle(
+        "open",
+        isOpen
+      );
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+    }
+  );
 }
 
-// ------------------------------------------------------------
-// LINKS DE NAVEGAÇÃO POR HASH
-// ------------------------------------------------------------
+// ============================================================
+// NAVEGAÇÃO SUAVE
+// ============================================================
 
-document.addEventListener("click", (event) => {
-  const link = event.target.closest("a[href^='#']");
+document.addEventListener(
+  "click",
+  (event) => {
 
-  if (!link) return;
+    const link =
+      event.target.closest(
+        "a[data-scroll]"
+      );
 
-  const targetId = link.getAttribute("href");
+    if (!link) return;
 
-  if (!targetId || targetId === "#") return;
+    const href =
+      link.getAttribute("href");
 
-  const target = document.querySelector(targetId);
+    if (
+      !href ||
+      !href.startsWith("#")
+    ) {
+      return;
+    }
 
-  if (target) {
+    const target =
+      document.querySelector(href);
+
+    if (!target) return;
+
     event.preventDefault();
 
     target.scrollIntoView({
@@ -642,24 +851,45 @@ document.addEventListener("click", (event) => {
     }
 
     if (menuButton) {
+
       menuButton.classList.remove("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
     }
   }
-});
+);
 
-// ------------------------------------------------------------
+// ============================================================
 // INICIALIZAÇÃO
-// ------------------------------------------------------------
+// ============================================================
 
 function initGameHub() {
-  console.log("GameHub iniciado.");
-  console.log(`Jogos carregados: ${games.length}`);
 
+  console.log(
+    "GameHub iniciado corretamente."
+  );
+
+  console.log(
+    `Total de jogos: ${games.length}`
+  );
+
+  renderFeaturedGames();
   renderGames();
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initGameHub);
+if (
+  document.readyState === "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initGameHub
+  );
+
 } else {
+
   initGameHub();
 }
