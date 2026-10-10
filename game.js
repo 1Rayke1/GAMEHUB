@@ -589,4 +589,5 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initGameHub);
 } else {
   initGameHub();
-}
+    }
+      
