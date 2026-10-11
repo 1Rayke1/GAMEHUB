@@ -94,28 +94,16 @@ function getCover(game) {
 }
 
 function coverMarkup(game, extraClass = "game-cover-wrapper") {
-  const title = escapeHTML(game.title);
-  const platform = escapeHTML(game.platform);
-  const image = escapeHTML(getCover(game));
+const title = escapeHTML(game.title);
+const platform = escapeHTML(game.platform);
+const image = escapeHTML(getCover(game));
 
-  return `
-    <div class="${extraClass}">
-      <img
-        class="game-cover"
-        src="${image}"
-        alt="Capa de ${title}"
-        loading="lazy"
-        onerror="this.hidden=true; this.nextElementSibling.hidden=false;"
-      >
-      <div class="cover-placeholder" hidden>
-        <span class="cover-console">🎮</span>
-        <strong>GAME</strong>
-        <span>${title}</span>
-        <small>${platform}</small>
-      </div>
-    </div>
-  `;
-}
+const loading = extraClass === "modal-game-cover"
+? "eager"
+: "lazy";
+
+return "<div class="${extraClass}"> <img class="game-cover" src="${image}" alt="Capa de ${title}" loading="${loading}" onerror=" this.hidden = true; this.nextElementSibling.hidden = false; " > <div class="cover-placeholder" hidden> <span class="cover-console">🎮</span> <strong>GAME</strong> <span>${title}</span> <small>${platform}</small> </div> </div>";
+  }
 
 // ============================================================
 // BOTÃO DE COMPARTILHAMENTO
