@@ -1,7 +1,7 @@
 "use strict";
 
 // ============================================================
-// GAMEHUB PSP & PS2 — VERSÃO OFICIAL ATUALIZADA
+// GAMEHUB PSP & PS2
 // ============================================================
 
 const COVER_PATH = "./images/covers/";
@@ -59,7 +59,14 @@ let currentFilter = "TODOS";
 // ============================================================
 
 function normalizeText(value) {
-  function createGameSlug(title) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function createGameSlug(title) {
   return normalizeText(title)
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
@@ -67,19 +74,10 @@ function normalizeText(value) {
 
 function getGameShareUrl(game) {
   const url = new URL(window.location.href);
-
   url.search = "";
   url.hash = "";
-
   url.searchParams.set("jogo", createGameSlug(game.title));
-
   return url.toString();
-}
-  return String(value ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
 }
 
 function escapeHTML(value) {
@@ -107,10 +105,7 @@ function coverMarkup(game, extraClass = "game-cover-wrapper") {
         src="${image}"
         alt="Capa de ${title}"
         loading="lazy"
-        onerror="
-          this.hidden = true;
-          this.nextElementSibling.hidden = false;
-        "
+        onerror="this.hidden=true; this.nextElementSibling.hidden=false;"
       >
       <div class="cover-placeholder" hidden>
         <span class="cover-console">🎮</span>
@@ -120,6 +115,33 @@ function coverMarkup(game, extraClass = "game-cover-wrapper") {
       </div>
     </div>
   `;
+}
+
+// ============================================================
+// BOTÃO DE COMPARTILHAMENTO
+// ============================================================
+
+async function shareGame(game, button) {
+  const shareUrl = getGameShareUrl(game);
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: `${game.title} | GameHub`,
+        text: `Confira ${game.title} no GameHub!`,
+        url: shareUrl
+      });
+    } else if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(shareUrl);
+      button.textContent = "✅ Link copiado!";
+    } else {
+      window.prompt("Copie o link deste jogo:", shareUrl);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      window.prompt("Copie o link deste jogo:", shareUrl);
+    }
+  }
 }
 
 // ============================================================
@@ -136,14 +158,12 @@ function createGameCard(game) {
           <span class="platform-badge">
             ${escapeHTML(game.platform)}
           </span>
-
           <span class="game-genre">
             ${escapeHTML(game.genre)}
           </span>
         </div>
 
         <h3>${escapeHTML(game.title)}</h3>
-
         <p>${escapeHTML(game.description)}</p>
 
         <div class="game-meta">
@@ -151,14 +171,24 @@ function createGameCard(game) {
           <span>${game.year}</span>
         </div>
 
-        <button
-          type="button"
-          class="details-button game-details-btn"
-          data-game-id="${game.id}"
-          aria-label="Ver detalhes de ${escapeHTML(game.title)}"
-        >
-          Ver detalhes
-        </button>
+        <div class="game-card-actions">
+          <button
+            type="button"
+            class="details-button game-details-btn"
+            data-game-id="${game.id}"
+          >
+            Ver detalhes
+          </button>
+
+          <button
+            type="button"
+            class="btn-secondary game-share-btn"
+            data-game-id="${game.id}"
+            aria-label="Compartilhar ${escapeHTML(game.title)}"
+          >
+            🔗 Compartilhar
+          </button>
+        </div>
       </div>
     </article>
   `;
@@ -185,10 +215,7 @@ function getFilteredGames() {
 }
 
 function renderGames() {
-  if (!gamesGrid) {
-    console.error("GameHub: elemento #gamesGrid não encontrado.");
-    return;
-  }
+  if (!gamesGrid) return;
 
   const filtered = getFilteredGames();
 
@@ -220,7 +247,7 @@ function renderFeaturedGames() {
 }
 
 // ============================================================
-// MODAL ATUALIZADO COM OS LINKS DOS JOGOS
+// MODAL DO JOGO
 // ============================================================
 
 function openGameModal(game) {
@@ -231,36 +258,10 @@ function openGameModal(game) {
     encodeURIComponent(`${game.title} ${game.platform} gameplay`);
 
   modalContent.innerHTML = `
-  const shareGameButton = document.getElementById("shareGameButton");
-
-if (shareGameButton) {
-  shareGameButton.addEventListener("click", async () => {
-    const shareUrl = getGameShareUrl(game);
-
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: game.title + " | GameHub",
-          text: "Confira este jogo no GameHub!",
-          url: shareUrl
-        });
-      } else {
-        await navigator.clipboard.writeText(shareUrl);
-        shareGameButton.textContent = "✅ Link copiado!";
-      }
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        window.prompt("Copie o link deste jogo:", shareUrl);
-      }
-    }
-  });
-}
     <div class="modal-game">
-
       ${coverMarkup(game, "modal-game-cover")}
 
       <div class="modal-game-info">
-
         <span class="platform-badge">
           ${escapeHTML(game.platform)}
         </span>
@@ -276,17 +277,14 @@ if (shareGameButton) {
             <strong>Plataforma</strong>
             <span>${escapeHTML(game.platform)}</span>
           </div>
-
           <div>
             <strong>Gênero</strong>
             <span>${escapeHTML(game.genre)}</span>
           </div>
-
           <div>
             <strong>Ano</strong>
             <span>${game.year}</span>
           </div>
-
           <div>
             <strong>Catálogo</strong>
             <span>GameHub PSP &amp; PS2</span>
@@ -295,7 +293,7 @@ if (shareGameButton) {
 
         <div class="modal-actions">
           <a
-            href="${game.link}"
+            href="${escapeHTML(game.link)}"
             class="btn-primary"
             target="_blank"
             rel="noopener noreferrer"
@@ -311,15 +309,15 @@ if (shareGameButton) {
           >
             📺 Ver Gameplay
           </a>
-          <button
-  type="button"
-  class="btn-secondary"
-  id="shareGameButton"
->
-  🔗 Compartilhar jogo
-</button>
-        </div>
 
+          <button
+            type="button"
+            class="btn-secondary"
+            id="shareGameButton"
+          >
+            🔗 Compartilhar jogo
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -327,6 +325,11 @@ if (shareGameButton) {
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+
+  document.getElementById("shareGameButton")
+    ?.addEventListener("click", (event) => {
+      shareGame(game, event.currentTarget);
+    });
 
   if (modalClose) modalClose.focus();
 }
@@ -340,14 +343,24 @@ function closeGameModal() {
 }
 
 // ============================================================
-// EVENTOS
+// EVENTOS DE CARTÕES E COMPARTILHAMENTO
 // ============================================================
 
 document.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
 
+  const shareButton = target.closest(".game-share-btn");
+
+  if (shareButton) {
+    const gameId = Number(shareButton.dataset.gameId);
+    const game = games.find((item) => item.id === gameId);
+    if (game) shareGame(game, shareButton);
+    return;
+  }
+
   const detailsButton = target.closest(".game-details-btn");
+
   if (detailsButton) {
     const gameId = Number(detailsButton.dataset.gameId);
     const game = games.find((item) => item.id === gameId);
@@ -368,16 +381,23 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeGameModal();
 });
 
+// ============================================================
+// PESQUISA
+// ============================================================
+
 if (searchInput) {
   searchInput.addEventListener("input", renderGames);
 }
 
 function resetCatalog() {
   currentFilter = "TODOS";
+
   if (searchInput) searchInput.value = "";
+
   filterButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.filter === "TODOS");
   });
+
   renderGames();
 }
 
@@ -395,11 +415,14 @@ if (resetFilters) {
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     currentFilter = button.dataset.filter || "TODOS";
+
     filterButtons.forEach((item) => {
       item.classList.toggle("active", item === button);
     });
+
     renderGames();
-    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("catalogo")
+      ?.scrollIntoView({ behavior: "smooth" });
   });
 });
 
@@ -407,18 +430,27 @@ platformButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const platform = button.dataset.platform;
     if (!platform) return;
+
     currentFilter = platform;
+
     filterButtons.forEach((item) => {
       item.classList.toggle("active", item.dataset.filter === platform);
     });
+
     renderGames();
-    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("catalogo")
+      ?.scrollIntoView({ behavior: "smooth" });
   });
 });
+
+// ============================================================
+// MENU MOBILE E NAVEGAÇÃO
+// ============================================================
 
 if (menuButton && mobileMenu) {
   menuButton.addEventListener("click", () => {
     const isOpen = mobileMenu.classList.toggle("open");
+
     menuButton.classList.toggle("open", isOpen);
     menuButton.setAttribute("aria-expanded", String(isOpen));
   });
@@ -427,18 +459,24 @@ if (menuButton && mobileMenu) {
 document.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
+
   const link = target.closest("a[data-scroll]");
   if (!link) return;
+
   const href = link.getAttribute("href");
   if (!href || !href.startsWith("#")) return;
+
   const section = document.querySelector(href);
   if (!section) return;
+
   event.preventDefault();
   section.scrollIntoView({ behavior: "smooth", block: "start" });
+
   mobileMenu?.classList.remove("open");
   menuButton?.classList.remove("open");
   menuButton?.setAttribute("aria-expanded", "false");
 });
+
 // ============================================================
 // GUIAS DO GAMEHUB
 // ============================================================
@@ -504,8 +542,9 @@ document.querySelectorAll("[data-guide]").forEach((button) => {
     modalClose?.focus();
   });
 });
+
 // ============================================================
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO E LINKS INDIVIDUAIS
 // ============================================================
 
 function initGameHub() {
