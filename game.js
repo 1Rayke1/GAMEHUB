@@ -392,7 +392,71 @@ document.addEventListener("click", (event) => {
   menuButton?.classList.remove("open");
   menuButton?.setAttribute("aria-expanded", "false");
 });
+// ============================================================
+// GUIAS DO GAMEHUB
+// ============================================================
 
+const guideContent = {
+  psp: {
+    title: "Guia de emulação PSP",
+    text: "Para jogar títulos de PSP, utilize um emulador compatível com seu dispositivo. Confira os requisitos, ajuste os controles e os gráficos gradualmente e consulte a documentação oficial para resolver problemas de desempenho.",
+    link: "https://www.ppsspp.org/"
+  },
+
+  ps2: {
+    title: "Guia de emulação PS2",
+    text: "A emulação de PlayStation 2 pode exigir configurações diferentes conforme o aparelho e o jogo. Consulte a documentação do emulador, verifique a compatibilidade e utilize apenas arquivos de jogos e BIOS obtidos legalmente.",
+    link: "https://pcsx2.net/"
+  },
+
+  dicas: {
+    title: "Dicas para jogadores",
+    text: "Antes de começar, confira os controles, ajuste a resolução de acordo com o desempenho do dispositivo e salve seu progresso regularmente quando o jogo permitir. Para resolver problemas, procure guias específicos do título.",
+    link: "https://www.youtube.com/"
+  }
+};
+
+document.querySelectorAll("[data-guide]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const guide = guideContent[button.dataset.guide];
+
+    if (!guide || !modal || !modalContent) return;
+
+    modalContent.innerHTML = `
+      <div class="modal-game-info guide-modal-content">
+        <span class="platform-badge">GUIA GAMEHUB</span>
+        <h2>${escapeHTML(guide.title)}</h2>
+        <p class="modal-description">${escapeHTML(guide.text)}</p>
+        <div class="modal-actions">
+          <a
+            class="btn-primary"
+            href="${escapeHTML(guide.link)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Consultar fonte oficial →
+          </a>
+          <button
+            type="button"
+            class="btn-secondary"
+            id="closeGuideButton"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    `;
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    document.getElementById("closeGuideButton")
+      ?.addEventListener("click", closeGameModal);
+
+    modalClose?.focus();
+  });
+});
 // ============================================================
 // INICIALIZAÇÃO
 // ============================================================
