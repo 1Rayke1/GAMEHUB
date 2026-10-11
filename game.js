@@ -287,6 +287,13 @@ function openGameModal(game) {
           >
             📺 Ver Gameplay
           </a>
+          <button
+  type="button"
+  class="btn-secondary"
+  id="shareGameButton"
+>
+  🔗 Compartilhar jogo
+</button>
         </div>
 
       </div>
