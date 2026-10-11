@@ -1558,3 +1558,110 @@ img {
     padding: 16px;
   }
      }
+/* ============================================================
+AÇÕES DOS CARTÕES — GAMEHUB
+============================================================ */
+
+.game-card-actions {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-top: 12px;
+}
+
+.game-card-actions .details-button,
+.game-card-actions .game-share-btn {
+width: 100%;
+min-height: 42px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px 12px;
+border: 1px solid var(--border);
+border-radius: 10px;
+font-family: inherit;
+font-size: 0.82rem;
+font-weight: 700;
+cursor: pointer;
+transition: var(--transition);
+}
+
+.game-card-actions .details-button {
+background: #0d121b;
+color: #fff;
+}
+
+.game-card-actions .details-button:hover {
+border-color: var(--accent);
+color: var(--accent-light);
+}
+
+.game-card-actions .game-share-btn {
+background: rgba(124, 92, 255, 0.12);
+color: var(--accent-light);
+}
+
+.game-card-actions .game-share-btn:hover {
+background: var(--accent);
+color: #fff;
+}
+
+.modal-game-cover {
+width: 100%;
+min-width: 0;
+align-self: start;
+}
+
+.modal-game-cover .game-cover {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.modal-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.modal-actions .btn-primary,
+.modal-actions .btn-secondary {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-height: 42px;
+padding: 10px 14px;
+border: 1px solid var(--border);
+border-radius: 10px;
+font-family: inherit;
+font-size: 0.82rem;
+font-weight: 700;
+text-align: center;
+cursor: pointer;
+}
+
+.modal-actions .btn-primary {
+background: var(--accent);
+color: #fff;
+}
+
+.modal-actions .btn-secondary {
+background: #111722;
+color: #fff;
+}
+
+@media (max-width: 650px) {
+.modal-game {
+grid-template-columns: 1fr;
+gap: 20px;
+}
+
+.modal-game-cover {
+width: min(100%, 260px);
+margin: 0 auto;
+}
+
+.modal-content {
+padding: 20px;
+}
+}
