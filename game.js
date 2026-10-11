@@ -59,6 +59,22 @@ let currentFilter = "TODOS";
 // ============================================================
 
 function normalizeText(value) {
+  function createGameSlug(title) {
+  return normalizeText(title)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getGameShareUrl(game) {
+  const url = new URL(window.location.href);
+
+  url.search = "";
+  url.hash = "";
+
+  url.searchParams.set("jogo", createGameSlug(game.title));
+
+  return url.toString();
+}
   return String(value ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
