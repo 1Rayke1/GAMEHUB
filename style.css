@@ -1665,3 +1665,67 @@ margin: 0 auto;
 padding: 20px;
 }
 }
+/* CORREÇÃO: CAPAS E BOTÕES DOS JOGOS */
+
+.cover-placeholder[hidden],
+.game-cover[hidden] {
+display: none !important;
+}
+
+.game-card-actions {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 14px;
+}
+
+.game-card-actions .details-button,
+.game-card-actions .game-share-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+min-height: 44px;
+margin: 0;
+padding: 10px 12px;
+border: 1px solid var(--border);
+border-radius: 10px;
+font-family: inherit;
+font-size: 0.8rem;
+font-weight: 700;
+line-height: 1.4;
+text-align: center;
+}
+
+.game-card-actions .game-share-btn {
+background: rgba(124, 92, 255, 0.12);
+color: var(--accent-light);
+}
+
+.game-card-actions .game-share-btn:hover {
+border-color: var(--accent);
+background: var(--accent);
+color: #fff;
+}
+
+.modal-game-cover .game-cover {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: contain;
+}
+
+.modal-game-cover .cover-placeholder[hidden] {
+display: none !important;
+}
+
+@media (max-width: 600px) {
+.game-card-actions {
+gap: 8px;
+}
+
+.game-card-actions .details-button,
+.game-card-actions .game-share-btn {
+font-size: 0.75rem;
+}
+   }
