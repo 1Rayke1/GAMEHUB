@@ -231,6 +231,30 @@ function openGameModal(game) {
     encodeURIComponent(`${game.title} ${game.platform} gameplay`);
 
   modalContent.innerHTML = `
+  const shareGameButton = document.getElementById("shareGameButton");
+
+if (shareGameButton) {
+  shareGameButton.addEventListener("click", async () => {
+    const shareUrl = getGameShareUrl(game);
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: game.title + " | GameHub",
+          text: "Confira este jogo no GameHub!",
+          url: shareUrl
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        shareGameButton.textContent = "✅ Link copiado!";
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        window.prompt("Copie o link deste jogo:", shareUrl);
+      }
+    }
+  });
+}
     <div class="modal-game">
 
       ${coverMarkup(game, "modal-game-cover")}
