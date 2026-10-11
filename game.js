@@ -511,7 +511,21 @@ document.querySelectorAll("[data-guide]").forEach((button) => {
 function initGameHub() {
   renderFeaturedGames();
   renderGames();
-  console.log("GameHub iniciado com links atualizados.");
+
+  const params = new URLSearchParams(window.location.search);
+  const sharedSlug = params.get("jogo");
+
+  if (sharedSlug) {
+    const game = games.find(
+      (item) => createGameSlug(item.title) === sharedSlug
+    );
+
+    if (game) {
+      openGameModal(game);
+    }
+  }
+
+  console.log("GameHub iniciado.");
 }
 
 if (document.readyState === "loading") {
